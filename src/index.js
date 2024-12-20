@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
+import ReactDOM from 'react-dom/client';
 import { AuthProvider } from "react-oidc-context";
 
 import ListerProposerScreen from './ListerProposerScreen';
@@ -9,16 +11,16 @@ const cognitoAuthConfig = {
   client_id: "5m2eg7uhvc36iubggemlqul7rp",
   redirect_uri: "https://d84l1y8p4kdic.cloudfront.net",
   response_type: "code",
-  scope: "email openid phone",
+  scope: "email openid phone"
 };
 
 
-const root=ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
       <AuthProvider {...cognitoAuthConfig}>
           <ListerProposerScreen />
       </AuthProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

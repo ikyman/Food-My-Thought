@@ -11,27 +11,30 @@ export default function ListerProposerScreen(){
      <>
         <LPToolbar/>
 
-        <div class="green-bkg">
+        <div className="green-bkg">
             <div id="general-larder-info">
-                <textarea>This box can only be edited by listers. It is a general description of the larder.</textarea>
+                <textarea defaultValue="This box can only be edited by listers. It is a general description of the larder."/>
             </div>
             <div id="fooditem-list">
                 <table id="fooditem-table">
-                  <tr>
-                    <th>Food Name</th>
-                    <th>Estimated Expiration date</th>
-                    <th>Category 1</th>
-                    <th>Category 2</th>
-
-                  </tr>
-                  <tr class="fooditem-entry">
-                    <td>Wild Rice</td>
-                    <td>14-Jul-2027</td>
-                    <td>Vegan</td>
-                    <td>Hufflepuff</td>
-                  </tr>
+                    <thead>
+                        <tr>
+                            <th>Food Name</th>
+                            <th>Estimated Expiration date</th>
+                            <th>Category 1</th>
+                            <th>Category 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="fooditem-entry">
+                        <td>Wild Rice</td>
+                        <td>14-Jul-2027</td>
+                        <td>Vegan</td>
+                        <td>Hufflepuff</td>
+                      </tr>
+                    </tbody>
                 </table>
-                <div class="lister-only">
+                <div className="lister-only">
                     <button id="add-fooditem">Add Footitem</button>
                     <button id="delete-fooditem">Delete Fooditem</button>
 
@@ -47,21 +50,19 @@ export default function ListerProposerScreen(){
                             Wild Rice pudding
                         </div>
                     </div>
-                    <textarea id="recipe-description" class="lgrey-bkg" >
-                        Rice pudding, but with wild rice
-                    </textarea>
+                    <textarea id="recipe-description" className="lgrey-bkg" defaultValue="Rice pudding, but with wild rice"/>
                     <div id="recipe-table">
-                        <div id="accepted-recipes" class = "lgreen-bkg">
+                        <div id="accepted-recipes" className="lgreen-bkg">
                             Wild Rice pudding
                         </div>
-                        <div id="rejected-recipes" class = "red-bkg">
+                        <div id="rejected-recipes" className="red-bkg">
                             Bleach: Tada! Now white rice
                         </div>
                     </div>
                 </div>
                 <div>
                     <button id="propose-recipe">Propose Recipe</button>
-                    <button id="sort-recipe" class="lister-only">Reject Recipe</button>
+                    <button id="sort-recipe" className="lister-only">Reject Recipe</button>
                     <button id="delete-recipe">Delete Recipe</button>
                 </div>
             </div>
@@ -69,7 +70,7 @@ export default function ListerProposerScreen(){
         
         <AccountToolbar/>
 
-        <div class="advertisement">
+        <div className="advertisement">
             Buy some stuff!
         </div>
     </>
