@@ -15,8 +15,10 @@ const cognitoAuthConfig = {
 
 const root=ReactDOM.createRoot(document.getElementById('root'));
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
-    <ListerProposerScreen />
+      <AuthProvider {...cognitoAuthConfig}>
+          <ListerProposerScreen />
+      </AuthProvider>
   </React.StrictMode>,
 );

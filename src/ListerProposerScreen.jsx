@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import LPToolbar from './LPToolbar'
+import AccountToolbar from './AccountToolbar'
 
 
 export default function ListerProposerScreen(){
@@ -65,8 +66,8 @@ export default function ListerProposerScreen(){
                 </div>
             </div>
         </div>
-
-
+        
+        <AccountToolbar/>
 
         <div class="advertisement">
             Buy some stuff!
