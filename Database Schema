@@ -1,0 +1,20 @@
+# Pretty much everything will be stored in a SQL database on the server. When a User enters Food My Thought, the cliant calls the server, which returns a JSON representation of all the data that the user desires.
+
+There are three things that need to be stored: A user's larder, which contain fooditems, and recipes, which is both called upon and is called by their respective fooditems.
+
+This will require four SQL Tables: 
+The first is, simply enough, the user's larder. It stores the AWS Cognito account identifier, the URL extension relating to said larder, the user's description, and the name of the two categories.
+The URL extension will be used as the primary key: both it and the AWS Cognito account identifier should be unique, but I'm choosing the URL extension because it'll then be easier to find the URL extension if one wants to make API calls.
+
+The second table shall be the table of all fooditems:
+It stores: The ID Number (Primary Key) the name, the estimated expiration date, the user's value for category one, and the user's value for category 2. It also has a foreign key pointing to the Larder said fooditem is a part of.
+This means two things: First of all, Two "banana"s are different if they are in different larders. This saves the effort of creating a complicated mesh of connecting tables to sperate the different category values and recipies for a "Banana" claimed by three different people.
+
+Speaking of connecting tables vis-a-vis recipies: You may have noticed that there is no link between fooditems and what recipes they are contained in. Ergo, our third table: the Fooditem-Recipe connecting table:
+It's composite key is (fooditem id, recipe id). It's only two columns are fooditem id and recipe id. Want to see which recipes use a particular fooditem? SELECT recipe id WHERE fooditem id.
+Want to know what fooditems are used in a recipe? SELECT fooditem id WHERE recipe id.
+
+Lastly, there's a table for the recipes.
+It contains an ID for the recipe, the recipe name, the Initial comment, the Lister's responce comment, and it's accepted/rejected status. Note that it DOES NOT include the Larder ID number that it is associated with. 
+I can already get that by querying what fooditems the recipe calls for, and using the larder id associated with the fooditem. 
+If I store the larder ID directly, than I'll have two different places storing the same number, and thus open the door to mismatching.
