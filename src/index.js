@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import ReactDOM from 'react-dom/client';
 import { AuthProvider } from "react-oidc-context";
 
-import ListerProposerScreen from './ListerProposerScreen';
+import WebPageNavigation from './WebPageNavigation';
 
 const cognitoAuthConfig = {
   authority: "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_OgxLfV3xw",
@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
       <AuthProvider {...cognitoAuthConfig}>
-          <ListerProposerScreen />
+          <WebPageNavigation />
       </AuthProvider>
   </React.StrictMode>
 );
