@@ -3,7 +3,7 @@
 There are three things that need to be stored: A user's larder, which contain fooditems, and recipes, which is both called upon and is called by their respective fooditems.
 
 This will require four SQL Tables: 
-The first is, simply enough, the user's larder. It stores the AWS Cognito account identifier, the URL extension relating to said larder, the user's description, and the name of the two categories.
+The first is, simply enough, the user's larder. It stores the AWS Cognito account identifier, the URL extension relating to said larder, the user's description, the name of the two categories, and the estimated deletion date.
 The URL extension will be used as the primary key: both it and the AWS Cognito account identifier should be unique, but I'm choosing the URL extension because it'll then be easier to find the URL extension if one wants to make API calls.
 
 The second table shall be the table of all fooditems:
