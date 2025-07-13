@@ -1,0 +1,56 @@
+If I'm correct, this is the general architecture of applications such as this one is as such: whenever a client does something that requires a change in data (AKA posting something, writing, or even just reading what was previously written), it does an API call.
+Other than loading the origional web-page, the only connection between the Client & Server is through API calls.
+
+-----------           --------
+|         | API Calls |      |
+|Client.js|-----------|Server|
+|         |           |      |
+-----------           --------
+
+Personally, I find it quite unsexy that everything gets packaged into neat little JSON, To be shuffled along an API semi-public transport.
+
+##Public and Private APIs
+Помните читаете мою огромний план для "еда мой думаете"? Да, конешно.
+Let's start off with the proposer. Proposes need not create an account, and may be completely anonymous.
+Thus, the APIs they need to use are entirely public: anyone can use it. Like a truely free public transport.
+Listers, however, have accounts. They would likely be annoyed if someone made changes to their personal larder without permission.
+And thus, The accounts that listers use, and only listers use, shall be private: they shall not work without some buy-in from cogito.
+
+## List of Proposer/Public APIs.
+
+The first thing the user does is either navigate to a specific link, or click on the "Random Larder" button.
+
+Let's say the user navigates to a specific link. The proposer wants to see three different things: the Larder information itsself, the fooditems in said larder, and the recipes that are proposed for said fooditems.
+Thus are our three APIS, all of which are GET apis: 
+The Larder API sends the URL extension to the server, and returns the larder information for said URL Extension. Simple as? Not quite.
+The client doesn't need to know the estimated expiration date, so the server computes that for them and returns the live/dead status as a simple bool.
+The fooditem API sends the URL extension to the server, and returns the fooditems for the larder for said URL Extension. 
+The recipe API seems simple enough from the client side: they send the URL Extension and get the recipes that are used by fooditems associated with the larder.
+The server side does the connecting of all the disparate tables that the client refuses to do. But the server can do most of the legwork with SQL Inner joins, and it requires loading less information to the client. 
+
+But wait! All that is if the client know the larder's URL extension! What if the client want a random larder?
+Thus our final API: the client sends their randomization preference (Only live larder, only dead larders, megarandom).
+The server returns either a larder that fits the bill, or an error informs the user that no such larder exists.
+
+## Now we have the semi-public APIs.
+I call it "Semi Public" because it is a POST API, and in theory my enemies could sabotage my fair app by connecting a spam bot to the "Propose Recipe API".
+For now, It shall be public. But if and when evil forces strike, I will have to restrict use of this API to only legitimate properers.
+
+What is the "Propose Recipe API"? 
+Simple. The user POSTS the session ID to the server. The server creates an entry in the SQL table for that Recipe, and takes note of the session ID.
+After that work, the server sends the client the ID for that recipe.
+
+A simple Empty Recipe by itsself is quite boring. Thus we have:
+
+Edit Recipe: the user adds an ingredient to a recipe, changes the name, or the description.
+This sends a PUT request contaning all the updates related to the recipe. This PUT request sends both the session ID and the Cogito token.
+If neither the Cogito Token nor the session ID is valid, this API call returns an HTTP Error.
+
+Delete Recipe: does what it says on the tin. As we don't need the client's permission to undo, deleting a recipe from the server's perspective is quite simple! 
+Much like editing a recipe, this also requires the Cogito token for the larder, or the same session key as the session that proposed the recipe.
+
+## List of Lister/Private APIs:
+This is an exercise in counting buttons that the Lister uses.
+I shall not be detailing every little API, because we have the "Grand vision" plan document.
+All of these APIs are Private because they require the User's Cogito Token. If the User doesn't have the correct Cogito token, then said APIs return an error. 
+ 
