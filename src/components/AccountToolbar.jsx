@@ -16,7 +16,7 @@ function AccountButtons(){
     const auth = useAuth();
     const signOutRedirect = () => {
         const clientId = "5m2eg7uhvc36iubggemlqul7rp";
-        const logoutUri = "<logout uri>";
+        const logoutUri = "http://localhost:3000/";
         const cognitoDomain = "https://us-east-2ogxlfv3xw.auth.us-east-2.amazoncognito.com";
         window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
     };
@@ -44,7 +44,7 @@ function AccountButtons(){
 
     return (
         <>
-            <button id="signin" onClick={() => auth.signinRedirect()}>&#62;Log in</button>
+            <button id="signin" onClick={() => auth.signinRedirect( )}>&#62;Log in</button>
             <button id="signout" onClick={() => signOutRedirect()}>&#62;Log out</button>
         </>
     );
