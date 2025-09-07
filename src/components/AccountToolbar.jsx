@@ -2,9 +2,6 @@ import React, {useState} from 'react';
 import { useAuth } from "react-oidc-context";
 
 export default function AccountToolbar(){
-
-
-
     return (
     <div className="toolbar">
         {<AccountButtons/>}
@@ -15,9 +12,9 @@ export default function AccountToolbar(){
 function AccountButtons(){
     const auth = useAuth();
     const signOutRedirect = () => {
-        const clientId = "5m2eg7uhvc36iubggemlqul7rp";
+        const clientId = "47piu68hu52i75d44npusb50uk";
         const logoutUri = "http://localhost:3000/";
-        const cognitoDomain = "https://us-east-2ogxlfv3xw.auth.us-east-2.amazoncognito.com";
+        const cognitoDomain = "https://us-east-2lsipznywc.auth.us-east-2.amazoncognito.com";
         window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
     };
     if (auth.isLoading) {
@@ -29,6 +26,7 @@ function AccountButtons(){
     }
 
     if (auth.isAuthenticated) {
+        console.log(auth.user?.profile.sub);
         return (
         <>
             <pre> Hello: {auth.user?.profile.email} </pre>

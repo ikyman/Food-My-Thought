@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
 import AccountToolbar from './AccountToolbar'
+import { useAuth } from "react-oidc-context";
 
 
 export default function HomeScreen(){
     const [userCode, setUserCode] = useState("The Default")
+    const auth = useAuth();
 
+    console.log(auth.signinRedirect);
 
     return (
      <>
@@ -19,7 +22,7 @@ export default function HomeScreen(){
                 </div>
             </div>
 
-            <button id="recipe-reccomend">List your Larder</button>
+            <button id="recipe-reccomend" onClick = {() => goToOwnLarder(auth) }>List your Larder</button>
 
         </div>
 
@@ -30,4 +33,13 @@ export default function HomeScreen(){
         </div>
     </>
     );
+}
+
+function goToOwnLarder(auth){
+
+    if (!auth.isAuthenticated) {
+        auth.signinRedirect( );
+    }
+    
+
 }
