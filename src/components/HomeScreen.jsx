@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import AccountToolbar from './AccountToolbar'
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router-dom";
+import RandomLarderForm from './RandomLarderForm'
 
 
 export default function HomeScreen(){
     const [userCode, setUserCode] = useState("The Default")
     const auth = useAuth();
+    const navigate = useNavigate();
 
     console.log(auth.signinRedirect);
 
@@ -13,16 +16,9 @@ export default function HomeScreen(){
      <>
         <div className="green-bkg">
             <h1></h1>
-            <div>
-                <button id="recipe-reccomend">Recommend Recipes to Randos</button>
-                <div>
-                    <input name="liveliness" type="radio" value="only-live"/>
-                    <input name="liveliness" type="radio" value="total-random"/>
-                    <input name="liveliness" type="radio" value="only-dead"/>
-                </div>
-            </div>
+            <RandomLarderForm />
 
-            <button id="recipe-reccomend" onClick = {() => goToOwnLarder(auth) }>List your Larder</button>
+            <button id="recipe-reccomend" onClick = { () => { navigate("/login") } }>List your Larder</button>
 
         </div>
 

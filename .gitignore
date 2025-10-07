@@ -1,2 +1,4 @@
 node_modules/
 ~*.docx
+.env
+build/asset-manifest.json

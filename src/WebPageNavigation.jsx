@@ -1,28 +1,35 @@
-import React, {useState} from 'react';
+import React from 'react';
 import HomeScreen from "./components/HomeScreen"
 import ListerProposerScreen from "./components/ListerProposerScreen"
+import LoginPage from "./userManagement/LoginPage"
 
 import {
     BrowserRouter,
     Routes,
     Route,
-    Naviagate
+    Navigate
 } from "react-router-dom"
 
 
 export default function WebPageNavigation(){
-
-
     return (
      <>
         <BrowserRouter>
             <Routes>
                 <Route
+                    path="*"
+                    element={<Navigate  to="/home" />}
+                />
+                <Route
                     path="/larder"
                     element={<ListerProposerScreen/>}
                 />
                 <Route
-                    path="*"
+                    path="/login"
+                    element={<LoginPage/>}
+                />
+                <Route
+                    path="/home"
                     element={<HomeScreen/>}
                 />
             </Routes>

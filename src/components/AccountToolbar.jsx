@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountToolbar(){
     return (
@@ -11,6 +12,7 @@ export default function AccountToolbar(){
 
 function AccountButtons(){
     const auth = useAuth();
+    const navigate = useNavigate();
     const signOutRedirect = () => {
         const clientId = "47piu68hu52i75d44npusb50uk";
         const logoutUri = "http://localhost:3000/";
@@ -42,7 +44,7 @@ function AccountButtons(){
 
     return (
         <>
-            <button id="signin" onClick={() => auth.signinRedirect( )}>&#62;Log in</button>
+            <button id="signin" onClick={() => navigate('/login')}>&#62;Log in</button>
             <button id="signout" onClick={() => signOutRedirect()}>&#62;Log out</button>
         </>
     );
