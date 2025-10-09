@@ -9,7 +9,7 @@ export default function LoginPage(){
             setError("");
             try{
                 const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
-                const response = await fetch(`${backendOrigin}/usrs/signin`, { credentials: 'include' });
+                const response = await fetch(`${backendOrigin}/usrs/signin`, { mode:'cors',credentials: 'include' });
                 if (!response.ok){
                     throw new Error(`Failed to load login page: ${response.status}`);
                 }
