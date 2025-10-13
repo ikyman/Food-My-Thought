@@ -1,4 +1,6 @@
 node_modules/
 ~*.docx
 .env
-build/asset-manifest.json
+FMTFrontEnd/build/
+*.pyc
+FMTBackEnd/db.sqlite3
