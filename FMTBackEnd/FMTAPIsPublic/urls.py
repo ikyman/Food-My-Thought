@@ -20,8 +20,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('usrs/signin', views.userSignIn),  
-    path('usrs/signup', views.userSignUp),  
+    path('usrs/signin/', views.userSignIn),  
+    path('usrs/signup/', views.userSignUp),  
     
     path('randomlarder/<str:randomization_preference>', views.getRandomLarder),
     #path('', views.homeScreen),

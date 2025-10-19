@@ -5,6 +5,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def userSignUp(request):
+ print(request.method)
  if request.method == "POST":
   email = request.POST["email"]
   password1 = request.POST["password1"]
