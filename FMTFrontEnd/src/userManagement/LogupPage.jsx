@@ -1,29 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {csrftoken} from '../utilities/csrfCookie'
+import CSRFToken from '../utilities/csrfCookie'
 
 export default function LogupPage(){
-    const containerRef = useRef(null);
+    const questionsRef = useRef(null);
     const [error, setError] = useState("");
+
+    const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
 
     useEffect(() => {
         async function loadLogup(){
             setError("");
             try{
-                const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
-                const response = await fetch(`${backendOrigin}/usrs/signup`, { mode:'cors',credentials: 'include' });
+                const response = await fetch(`${backendOrigin}/usrs/signup/`, { mode:'cors',credentials: 'include' });
                 if (!response.ok){
                     throw new Error(`Failed to load signup page: ${response.status}`);
                 }
                 const html = await response.text();
-                if (containerRef.current){    
-                    containerRef.current.innerHTML = html;
-                    let htmlForm=containerRef.current.getElementsByTagName("form")[0];
-                    if (htmlForm == undefined){
-                        throw new Error("Sign-up form doesn't have a form")
-                    }
-                    htmlForm.action = `${backendOrigin}/usrs/signup`;
-                    htmlForm.method = "POST";
-                    console.log(htmlForm);
+                if (questionsRef.current){    
+                    questionsRef.current.innerHTML = html;
+
                 }
             }catch(err){
                 setError(String(err));
@@ -31,6 +26,9 @@ export default function LogupPage(){
         }
         loadLogup();
     }, []);
+    
+
+
 
     return (
     <>
@@ -39,7 +37,10 @@ export default function LogupPage(){
             {error ? (
                 <div className="error">{error}</div>
             ) : null}
-            <div ref={containerRef} className="logup-html" />
+            <form className="logup-form" method = "POST" action = {backendOrigin + "/usrs/signup/" } > 
+                <CSRFToken/>
+                <div ref = {questionsRef}></div>
+            </form>
         </div>
     </>
     );

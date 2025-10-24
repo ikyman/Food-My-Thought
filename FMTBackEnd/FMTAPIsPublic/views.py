@@ -1,8 +1,20 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 # Create your views here.
+
+@csrf_exempt
+def testPost(request):
+ print(request.method)
+ if request.method == "POST":
+  print("tested with input" + str(request.headers) + "success\n")
+  
+  print("\nbody ist" + str(request.text) + "\n")
+  return (HttpResponse(request))
+ else:
+  return render(request, "userManagement/signin.html")#, {"form": form}) 
 
 def userSignUp(request):
  print(request.method)
@@ -20,6 +32,7 @@ def userSignIn(request):
  if request.method == "POST":
   email = request.POST["email"]
   password = request.POST["password"]
+  print("email", email, "Password leakage:", password)
   user = authenticate(request, username=username, password=password)
   if user is not None:
    login(request,user)

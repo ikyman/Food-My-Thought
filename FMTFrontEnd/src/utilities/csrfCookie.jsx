@@ -1,3 +1,5 @@
+import React from 'react';
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -13,4 +15,11 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-export const csrftoken = getCookie('csrftoken');
+const csrftoken = getCookie('csrftoken');
+
+const CSRFToken = () => {
+    return (
+        <input type="hidden" name="HTTP_X_CSRFTOKEN" value={csrftoken} />
+    );
+};
+export default getCookie; CSRFToken

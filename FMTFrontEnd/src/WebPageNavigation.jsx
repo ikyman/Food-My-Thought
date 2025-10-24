@@ -3,6 +3,7 @@ import HomeScreen from "./components/HomeScreen"
 import ListerProposerScreen from "./components/ListerProposerScreen"
 import LoginPage from "./userManagement/LoginPage"
 import LogupPage from "./userManagement/LogupPage"
+import TestPost from './components/TestPost';
 
 import {
     BrowserRouter,
@@ -36,6 +37,10 @@ export default function WebPageNavigation(){
                 <Route
                     path="/home"
                     element={<HomeScreen/>}
+                />
+                <Route
+                    path = "testpost"
+                    element = {<TestPost/>}
                 />
             </Routes>
         </BrowserRouter>

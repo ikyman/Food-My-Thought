@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from os import path as ospath
+from corsheaders.defaults import default_headers
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,10 +51,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -76,6 +78,15 @@ CSRF_TRUSTED_ORIGINS = [
  'https://localhost:3000',
 ]
 
+
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "x_csrftoken",
+    "http_x_csrftoken",
+    "savedextraheader",
+    "pointlessextra"
+)
+
 ROOT_URLCONF = 'FMTAPIsPublic.urls'
 
 TEMPLATES = [
@@ -95,7 +106,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'FMTBackAppManager.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
