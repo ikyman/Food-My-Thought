@@ -15,11 +15,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-const csrftoken = getCookie('csrftoken');
+const csrfCookieToken = getCookie('csrftoken');
 
-const CSRFToken = () => {
-    return (
-        <input type="hidden" name="HTTP_X_CSRFTOKEN" value={csrftoken} />
-    );
-};
-export default getCookie; CSRFToken
+export default getCookie; csrfCookieToken
