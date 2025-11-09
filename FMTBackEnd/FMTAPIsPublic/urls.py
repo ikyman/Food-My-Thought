@@ -23,8 +23,6 @@ urlpatterns = [
     path('usrs/signin/', views.userSignIn),  
     path('usrs/signup/', views.userSignUp),  
     
-    path('testpost/', views.testPost),
-    
     path('randomlarder/<str:randomization_preference>', views.getRandomLarder),
     #path('', views.homeScreen),
      

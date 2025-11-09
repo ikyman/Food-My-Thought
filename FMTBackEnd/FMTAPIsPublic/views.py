@@ -6,16 +6,6 @@ from django.http import HttpResponse
 # Create your views here.
 
 @csrf_exempt
-def testPost(request):
- print(request.method)
- if request.method == "POST":
-  print("tested with input" + str(request.headers) + "success\n")
-  
-  print("\nbody ist" + str(request.text) + "\n")
-  return (HttpResponse(request))
- else:
-  return render(request, "userManagement/signin.html")#, {"form": form}) 
-
 def userSignUp(request):
  print(request.method)
  if request.method == "POST":
@@ -27,9 +17,10 @@ def userSignUp(request):
   print("User " + email + "Created")
  else:
   return render(request, "userManagement/signup.html")#, {"form": form})
-
+@csrf_exempt
 def userSignIn(request):
  if request.method == "POST":
+  print("Exceedengly not-secure:", request.POST)
   email = request.POST["email"]
   password = request.POST["password"]
   print("email", email, "Password leakage:", password)
@@ -44,7 +35,6 @@ def userSignIn(request):
 
 @require_GET
 def getRandomLarder(request, randomization_preference = "live-only"):
- 
  if randomization_preference == "live-only":
   pass
  elif randomization_preference == "dead-only":
