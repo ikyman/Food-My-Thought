@@ -1,34 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CSRFToken from '../utilities/csrfCookie'
+import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
+
 
 export default function LogupPage(){
-    const questionsRef = useRef(null);
     const [error, setError] = useState("");
+    const {getHTML, csrfPost} = useQueryDjangoBackendContext()
 
-    const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
+    const sendSignup = async (e) => {
+        e.preventDefault();
+        
+        await csrfPost("/usrs/signup/", {"email": e.target.elements["email"].value,
+                "password1": e.target.elements["password1"].value,
+                "password2": e.target.elements["password2"].value
+            }
+        );
+    } 
 
     useEffect(() => {
         async function loadLogup(){
             setError("");
             try{
-                const response = await fetch(`${backendOrigin}/usrs/signup/`, { mode:'cors',credentials: 'include' });
-                if (!response.ok){
-                    throw new Error(`Failed to load signup page: ${response.status}`);
-                }
-                const html = await response.text();
-                if (questionsRef.current){    
-                    questionsRef.current.innerHTML = html;
-
-                }
+                getHTML("/usrs/signup")
             }catch(err){
                 setError(String(err));
             }
         }
         loadLogup();
     }, []);
-    
-
-
 
     return (
     <>
@@ -37,10 +35,20 @@ export default function LogupPage(){
             {error ? (
                 <div className="error">{error}</div>
             ) : null}
-            <form className="logup-form" method = "POST" action = {backendOrigin + "/usrs/signup/" } > 
-                <CSRFToken/>
-                <div ref = {questionsRef}></div>
+            <form className="logup-form" onSubmit={sendSignup} > 
+                <label htmlFor="email">E-mail</label>
+                <input id="email" name="email" type="email" required />
+                <br/>
+                <label htmlFor="password1">Password</label>
+                <input id="password1" name="password1" type="password"  required />
+                <br/>
+                <label htmlFor="password2">Confirm Password</label>
+                <input id="password2" name="password2" type="password"  required />
+                <br/>
+
+                <button type="submit">Sign Up</button>
             </form>
+            <h3 className = "error">{error}</h3>
         </div>
     </>
     );
