@@ -3,6 +3,6 @@ from .models import UsernamelessUser
 
 class UsernamelessCreationForm(UserCreationForm):
  class Meta(UserCreationForm.Meta):
-  model = CustomUser
+  model = UsernamelessUser
   fields = ('email', password1, password2)
 
