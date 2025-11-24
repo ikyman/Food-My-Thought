@@ -12,7 +12,7 @@ export const QueryDjangoBackendContextProvider = ({children}) => {
 
         var htmlPlacer = document.createElement('div');
         htmlPlacer.innerHTML = getResponseText;
-        const csrfInputField = document.querySelector('[name=csrfmiddlewaretoken]');
+        const csrfInputField = htmlPlacer.querySelector('[name=csrfmiddlewaretoken]');
         if (csrfInputField){
         	setCsrfInputToken(csrfInputField.value);
         	csrfInputField.remove();
@@ -36,7 +36,6 @@ export const QueryDjangoBackendContextProvider = ({children}) => {
       let value = entry[1];
       postBody.append(key, value);
     });
-
 		const postResponse = await fetch(`${backendOrigin}${endpoint}`, {
             method : "POST",
             headers: {'X-CSRFToken': csrfInputToken},
