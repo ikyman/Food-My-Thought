@@ -5,7 +5,7 @@ def get_next_url():
  
 # Create your models here.
 
-class UserLarders(models.Model):
+class UserLarder(models.Model):
  #cognito_sub = models.CharField()
  url_ext = models.CharField(max_length=10, primary_key=True, default=get_next_url())
  user_description = models.TextField()
@@ -19,4 +19,4 @@ class FoodItem(models.Model):
  estimated_expiration_date = models.DateField()
  cat1_value = models.CharField(max_length=30)
  cat2_value = models.CharField(max_length=30)
- larder = models.ForeignKey(UserLarders, on_delete=models.CASCADE, related_name='food_items')
+ larder = models.ForeignKey(UserLarder, on_delete=models.CASCADE, related_name='food_items')
