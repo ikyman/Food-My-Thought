@@ -8,7 +8,7 @@ export const QueryDjangoBackendContextProvider = ({children}) => {
 
 
 	const getHTML = async (endpoint) => {
-		const getResponseText = getNonHTML(endpoint)
+		const getResponseText = await (await getNonHTML(endpoint)).text()
 
         var htmlPlacer = document.createElement('div');
         htmlPlacer.innerHTML = getResponseText;
@@ -20,15 +20,13 @@ export const QueryDjangoBackendContextProvider = ({children}) => {
         return htmlPlacer
 	}
 
-
 	const getNonHTML = async (endpoint) => {
 		const getResponse = await fetch(`${backendOrigin}${endpoint}`, { mode:'cors',credentials: 'include' });
         if (!getResponse.ok){
-            throw new Error(`Failed to load login page: ${getResponse.status}`);
+            throw new Error(`Failed to request from Back-End: ${getResponse.status}`);
         }
-        return await getResponse.text();
+        return getResponse;
 	}
-
 
 	const csrfPost = async (endpoint, requestBody) => {
     let postBody = new FormData();
