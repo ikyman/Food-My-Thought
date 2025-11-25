@@ -13,12 +13,7 @@ export default function AccountToolbar(){
 function AccountButtons(){
     const auth = useAuth();
     const navigate = useNavigate();
-    const signOutRedirect = () => {
-        const clientId = "47piu68hu52i75d44npusb50uk";
-        const logoutUri = "http://localhost:3000/";
-        const cognitoDomain = "https://us-east-2lsipznywc.auth.us-east-2.amazoncognito.com";
-        window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-    };
+
     if (auth.isLoading) {
         return <>Loading...</>;
     }
@@ -45,7 +40,7 @@ function AccountButtons(){
     return (
         <>
             <button id="signin" onClick={() => navigate('/login')}>&#62;Log in</button>
-            <button id="signout" onClick={() => signOutRedirect()}>&#62;Log out</button>
+            <button id="signout" onClick={() => console.log("Not Yet Implimented!")}>&#62;Log out</button>
         </>
     );
 

@@ -1,17 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AccountToolbar from './AccountToolbar'
-import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router-dom";
 import RandomLarderForm from './RandomLarderForm'
 
 
+
 export default function HomeScreen(){
-    const [userCode, setUserCode] = useState("The Default")
-    const auth = useAuth();
     const navigate = useNavigate();
-
-    console.log(auth.signinRedirect);
-
     return (
      <>
         <div className="green-bkg">
@@ -31,11 +26,3 @@ export default function HomeScreen(){
     );
 }
 
-function goToOwnLarder(auth){
-
-    if (!auth.isAuthenticated) {
-        auth.signinRedirect( );
-    }
-    
-
-}
