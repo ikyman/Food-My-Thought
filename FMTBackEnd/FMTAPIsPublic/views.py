@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import HttpResponse
 from .models import UserLarder
 
@@ -14,6 +14,13 @@ def userSignUp(request):
   email = request.POST["email"]
   password1 = request.POST["password1"]
   password2 = request.POST["password2"]
+  if User.objects.filter(email=email) :
+   user = authenticate(request, username=email, password=password1)
+   if user is not None:
+    login(request,user)
+    return HttpResponse()
+   else:
+    return HttpResponse(status = 401, reason = "A User with that E-mail already Exists")   
   if password1 != password2:
    return HttpResponse(status = 401, reason = "Passwords do not match")
   User.objects.create_user(email, password1)
@@ -34,7 +41,10 @@ def userSignIn(request):
    return HttpResponse(status = 401, reason = "Can't Sign in! User doesn't exist, or email/password wrong")
  else: 
   return render(request, "userManagement/csrfToken.html")#, {"form": form})
- 
+
+def userSignOut(request):
+ logout(request)
+ return HttpResponse()
 
 @require_GET
 def getRandomLarder(request, randomization_preference = "live-only"):
@@ -52,22 +62,12 @@ def getRandomLarder(request, randomization_preference = "live-only"):
  print(HttpResponse(objet).headers)
  return HttpResponse(objet)
 
-#@api_view(http_method_names=['GET'])
+@require_GET
+def getOwnLarder(request):
+ return HttpResponse(status = 501, reason = "Getting a user's larder: Implimentation not yet implemented")
+ 
+
+@require_GET
 def getLarderByURLext(request, larder_url_extension):
  reqbody = request.body
-
- return HttpResponse({"message": "No Larders, as SQL hasn't been set up yet. URL Extension is "+larder_url_extension})
-
-#def homeScreen(request):
- #return render(request, "appHTMLs/homeScreen.html")
-
-
-#def fromFPSView(request, FramesPerSecond):
- #isFloat = stringIsFloat(FramesPerSecond)
- #if not isFloat:
-  #return None
- #FramesPerSecond=float(FramesPerSecond)
- #if FramesPerSecond <=0:
-  #return None
- #frameLength = 1/FramesPerSecond
- #return HttpResponse(round(frameLength, 3))
+ return HttpResponse( {"message": "No Larders, as SQL hasn't been set up yet. URL Extension is "+larder_url_extension}, status = 501)
