@@ -4,3 +4,5 @@ node_modules/
 FMTFrontEnd/build/
 *.pyc
 FMTBackEnd/db.sqlite3
+
+.vscode/

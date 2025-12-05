@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import RandomLarderForm from './RandomLarderForm'
 
 
-
 export default function HomeScreen(){
     const navigate = useNavigate();
+    
     return (
      <>
         <div className="green-bkg">
