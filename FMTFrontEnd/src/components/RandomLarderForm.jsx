@@ -1,24 +1,35 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
+
+
 
 export default function RandomLarderForm() {
-    const handleSubmit = async (event) => {
+    const navigate = useNavigate();
+    const {getNonHTML} = useQueryDjangoBackendContext()
+
+    const navigateToRandomLarder = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         
         try {
-            const response = await fetch(`/getrandom/?chosenrandomness=${formData.get('liveliness') }`, {
-                method: 'GET',
-            });
-            console.log(await response.text());
-            // (Currently incestuiously points to self, returns the index/root/public html page of the react.)
-            
+            const response = await getNonHTML("/larders/url-extension?randomness-level=" + formData.get('liveliness'));
+
+            if (response.status == 404){
+                navigate("/home")
+            }
+            if (response.ok){
+                const jsonResponse = response.json();
+                navigate("/larder/" + jsonResponse.url_exten)
+            }
+           
         } catch (error) {
             console.error('Error fetching random Larder:', error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={navigateToRandomLarder}>
             <button type="submit">Recommend Recipes to Randos</button>
             <div>
                 <label>
