@@ -20,7 +20,7 @@ export default function LogupPage(){
         async function loadLogup(){
             setError("");
             try{
-                getHTML("/usrs/signup")
+                getHTML("/usrs/signup/")
             }catch(err){
                 setError(String(err));
             }

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
 
-
 export default function LoginPage(){
     const [error, setError] = useState("");
-    const {getHTML, csrfPost} = useQueryDjangoBackendContext()
+    const {getHTML, csrfPost} = useQueryDjangoBackendContext();
+
 
     const sendSignin = async (e) => {
         e.preventDefault();
@@ -12,18 +12,21 @@ export default function LoginPage(){
         const signupResponse = await csrfPost("/usrs/signin/", {"email": e.target.elements["email"].value,
                 "password": e.target.elements["password"].value}
         );
-        if (!signupResponse.ok){
+        if (signupResponse.ok){
+
+        }else{
             console.log(signupResponse);
             const errorText = await signupResponse.text();
             setError( errorText );
         }
+        
     } 
 
     useEffect(() => {
         async function loadLogin(){
             setError("");
             try{
-                getHTML("/usrs/signin")
+                getHTML("/usrs/signin/")
             }catch(err){
                 setError(String(err));
             }
