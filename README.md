@@ -1,10 +1,14 @@
 # Food-My-Thought
-This is an app to allow random strangers on the internet to suggest how one can use up food in one's pantry
+The A to Z plan for this web-app is in the Food My Thought.docx. However, I am marking a handful of issues as "Good First Issues". Thus, I presumibally should provide a rough outline of this app.
 
-The entire plan for this web-app is in the Food My Thought.docx
+Eventually, this app shall be beseech strangers on the internet for recipies to use up all the leftover food they have in their Kitchen.
+
+However, before that, this program first needs to be able to list all the food a prospective user has in their kitchen.
+
+A user gets granted a Larder upon Logging in. With such a Larder, they can list all the food they currently have, along with their estimated expiration date, and their values for two user-defined categories.
 
 # Program Start-up 
-The front-end is in React. the back-end is in Django. In order for all of the features of this program to be present, both React & Django have to be running at the same time.
+The front-end is in React. The back-end is in Django. In order for all of the features of this program to be present, both React & Django have to be running at the same time.
 Normally, this requires 2 different powershells running two different commands: 
 One powershell open in FMTBackEnd, running the django server (Command: " python manage.py runserver 8080 " [The 8080 is optional. Django defaults to 8000. I switched to 8080 in the hopes of enabling https connection, but didn't switch back after my hopes were dashed.])
 Another powershell open in FMTFrontEnd, running React (Command: " npm start ")
