@@ -20,10 +20,13 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('usrs/signin/', views.userSignIn),  
+    path('usrs/signin/', views.userSignIn),
+    path('usrs/signout/', views.userSignOut),  
     path('usrs/signup/', views.userSignUp),  
     
     path('randomlarder/<str:randomization_preference>', views.getRandomLarder),
+    path('larder/', views.getOwnLarder),
+    path('larder/<int:url_exten>', views.getLarderByURLext),
     #path('', views.homeScreen),
      
     #path(r'larders/<str:larder-url-extension>/',views.getLarderByURLext),
