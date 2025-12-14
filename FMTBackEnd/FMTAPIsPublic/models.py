@@ -1,13 +1,12 @@
 from django.db import models
+from django.contrib.auth import get_user_model, login
 
-def get_next_url():
- pass
- 
+User = get_user_model()
+
 # Create your models here.
-
 class UserLarder(models.Model):
  #cognito_sub = models.CharField()
- url_ext = models.CharField(max_length=10, primary_key=True, default=get_next_url())
+ url_exten = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
  user_description = models.TextField()
  cat1 = models.CharField(max_length=30)
  cat2 = models.CharField(max_length=30)
