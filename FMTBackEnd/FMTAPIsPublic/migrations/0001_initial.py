@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserLarder',
             fields=[
-                ('url_ext', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='userNoUsername.usernamelessuser')),
+                ('url_exten', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='userNoUsername.usernamelessuser')),
                 ('user_description', models.TextField()),
                 ('cat1', models.CharField(max_length=30)),
                 ('cat2', models.CharField(max_length=30)),
