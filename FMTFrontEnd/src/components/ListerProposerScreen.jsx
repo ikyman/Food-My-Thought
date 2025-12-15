@@ -1,10 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LPToolbar from './LPToolbar'
 import AccountToolbar from './AccountToolbar'
+import FooditemTable from './FooditemTable';
+import { useParams } from 'react-router-dom';
+
+import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
+
 
 
 export default function ListerProposerScreen(){
-    const [userCode, setUserCode] = useState("The Default")
+    const { url_exten } = useParams();
+    const {getNonHTML} = useQueryDjangoBackendContext()
+    const [viewAsOwner, setViewAsOwner] = useState(false);
+    const [larderOverview, setLarderOverview] = useState("This box can only be edited by listers. It is a general description of the larder.")
+    const [larder, setLarder] = useState(null);
+
+    useEffect(() => {
+        async function loadLarder(){
+            try{
+                const larderResponse = await getNonHTML(`/larder/${url_exten}/`);
+                const larderJson = await larderResponse.json();
+                setViewAsOwner(larderJson["display_as_owner"] )
+                setLarder(larderJson);
+                setLarderOverview(larderJson["user_description"])
+            }catch(err){
+                console.error(String(err));
+            }
+        }
+        loadLarder();
+    }, []);
 
 
     return (
@@ -13,33 +37,10 @@ export default function ListerProposerScreen(){
 
         <div className="green-bkg">
             <div id="general-larder-info">
-                <textarea defaultValue="This box can only be edited by listers. It is a general description of the larder."/>
+                <textarea defaultValue={larderOverview}/>
             </div>
-            <div id="fooditem-list">
-                <table id="fooditem-table">
-                    <thead>
-                        <tr>
-                            <th>Food Name</th>
-                            <th>Estimated Expiration date</th>
-                            <th>Category 1</th>
-                            <th>Category 2</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="fooditem-entry">
-                        <td>Wild Rice</td>
-                        <td>14-Jul-2027</td>
-                        <td>Vegan</td>
-                        <td>Hufflepuff</td>
-                      </tr>
-                    </tbody>
-                </table>
-                <div className="lister-only">
-                    <button id="add-fooditem">Add Footitem</button>
-                    <button id="delete-fooditem">Delete Fooditem</button>
+            <FooditemTable fooditems = {[]} categoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
 
-                </div>
-            </div>
             <div id="fooditem-specifics">
                 <div>
                     <div>
