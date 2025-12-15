@@ -23,7 +23,7 @@ export default function WebPageNavigation(){
                     element={<Navigate  to="/home" />}
                 />
                 <Route
-                    path="/larder"
+                    path="/larder/:url_exten"
                     element={<ListerProposerScreen/>}
                 />
                 <Route

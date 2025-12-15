@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage(){
     const [error, setError] = useState("");
     const {getHTML, csrfPost} = useQueryDjangoBackendContext();
+    const navigate = useNavigate();
 
 
     const sendSignin = async (e) => {
@@ -13,13 +15,13 @@ export default function LoginPage(){
                 "password": e.target.elements["password"].value}
         );
         if (signupResponse.ok){
-
+            const responseBody = await signupResponse.json();
+            navigate(`/larder/${responseBody["url_exten"]}`);
         }else{
             console.log(signupResponse);
             const errorText = await signupResponse.text();
             setError( errorText );
         }
-        
     } 
 
     useEffect(() => {
