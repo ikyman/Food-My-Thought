@@ -2,7 +2,7 @@ import {useState} from 'react'
 import { QueryDjangoBackendContext } from './QueryDjangoBackendContext'
 
 export const QueryDjangoBackendContextProvider = ({children}) => {
-    const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
+  const backendOrigin = process.env.REACT_APP_DJANGO_ORIGIN;
 
 	const [csrfInputToken, setCsrfInputToken] = useState("");
 

@@ -67,17 +67,20 @@ def getOwnLarder(request):
  if not request.user.is_authenticated:
   return HttpResponse(status = 501, reason = "TODO: Redirect not-logged-in users to login page.")
  session_user_url_exten = request.user.url_exten
- try :
-  querySet = UserLarder.objects.get(url_ext = request.user)
- except UserLarder.DoesNotExist: 
-  UserLarder.objects.create(url_ext=request.user, user_description = "Description", cat1 = "Category1", cat2 = "Category2:")
-  
+
  response = HttpResponse(status = 200)
  response["url_exten"] = session_user_url_exten
   
  return response
 
 @require_GET
-def getLarderByURLext(request, larder_url_extension):
- reqbody = request.body
- return HttpResponse( {"message": "No Larders, as SQL hasn't been set up yet. URL Extension is "+larder_url_extension}, status = 501)
+def getLarderByURLext(request, url_exten):
+ #reqbody = request.body
+ session_user_url_exten = None 
+ if request.user.is_authenticated:
+  session_user_url_exten = request.user.url_exten 
+ 
+ response = HttpResponse()
+ #response["url_exten"] = session_user_url_exten
+ 
+ return HttpResponse( {"message": "No Larders, as SQL hasn't been set up yet. URL Extension is {}".format(url_exten)}, status = 501)
