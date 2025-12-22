@@ -26,12 +26,9 @@ urlpatterns = [
     
     path('randomlarder/<str:randomization_preference>', views.getRandomLarder),
     path('larder/', views.getOwnLarder),
-    path('larder/<int:url_exten>', views.getLarderByURLext),
-    #path('', views.homeScreen),
-     
-    #path(r'larders/<str:larder-url-extension>/',views.getLarderByURLext),
-    #path(r'larder-ids/<str:randomization-preference>/', views.getRandomURLext),
+    path('larder/<int:url_exten>/', views.getLarderByURLext),
     
-    #path(r'fooditems/<str:larder-url-extension>/', views.getFooditemsForLarder),
+    path(r'fooditems/', views.postFoodItem),
+    
     #path(r'recipes/<str:larder-url-extension>/', views.getRecipesForLarder),
 ]
