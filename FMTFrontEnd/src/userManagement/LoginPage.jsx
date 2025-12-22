@@ -16,6 +16,7 @@ export default function LoginPage(){
         );
         if (signupResponse.ok){
             const responseBody = await signupResponse.json();
+            getHTML("/usrs/signin/")
             navigate(`/larder/${responseBody["url_exten"]}`);
         }else{
             console.log(signupResponse);
