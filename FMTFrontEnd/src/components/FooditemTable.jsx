@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useRef} from 'react';
+import { FoodItem ,renderFoodItem } from "./FoodItem"
 
 /**
  * Renders the table of food items for a larder.
@@ -7,8 +8,15 @@ import React from 'react';
  * - fooditems: array of objects, each with at least
  *   { id?, name, estimated_expiration, category1, category2 }
  */
-export default function FooditemTable({ fooditems, loadedCategoryNames, viewAsOwner}) {
-    const rows = fooditems || [];
+export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, viewAsOwner}) {
+    const [categoryNames, setCategoryNames] = useState(loadedCategoryNames)
+    const [foodItems, setFoodItems] = useState(loadedFoodItems);
+
+    const addFoodItem = () =>{
+        const newFoodItem = new FoodItem({})
+        setFoodItems([...foodItems, newFoodItem]);
+
+    }
 
     return (
         <div id="fooditem-list">
@@ -18,29 +26,24 @@ export default function FooditemTable({ fooditems, loadedCategoryNames, viewAsOw
                     <tr>
                         <th>Food Name</th>
                         <th>Estimated Expiration date</th>
-                        <th>Category 1</th>
-                        <th>Category 2</th>
+                        <th>{categoryNames[0]}</th>
+                        <th>{categoryNames[1]}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.length === 0 ? (
+                    {foodItems.length === 0 ? (
                         <tr className="fooditem-entry">
                             <td colSpan={4}>No food items in this larder yet.</td>
                         </tr>
                     ) : (
-                        rows.map((item, index) => (
-                            <tr className="fooditem-entry" key={item.id ?? item.name ?? index}>
-                                <td>{item.name}</td>
-                                <td>{item.estimated_expiration}</td>
-                                <td>{item.category1}</td>
-                                <td>{item.category2}</td>
-                            </tr>
+                        foodItems.map((item) => (
+                            renderFoodItem(item)
                         ))
                     )}
                 </tbody>
             </table>
             <div className="lister-only">
-                <button id="add-fooditem">Add Footitem</button>
+                <button id="add-fooditem" onClick={addFoodItem}>Add Footitem</button>
                 <button id="delete-fooditem">Delete Fooditem</button>
     
             </div>

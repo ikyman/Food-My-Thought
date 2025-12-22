@@ -3,6 +3,7 @@ import LPToolbar from './LPToolbar'
 import AccountToolbar from './AccountToolbar'
 import FooditemTable from './FooditemTable';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
 
@@ -15,6 +16,10 @@ export default function ListerProposerScreen(){
     const [larderOverview, setLarderOverview] = useState("This box can only be edited by listers. It is a general description of the larder.")
     const [larder, setLarder] = useState(null);
 
+    let loadedFoodItems = []
+
+    const navigate = useNavigate()
+
     useEffect(() => {
         async function loadLarder(){
             try{
@@ -23,8 +28,11 @@ export default function ListerProposerScreen(){
                 setViewAsOwner(larderJson["display_as_owner"] )
                 setLarder(larderJson);
                 setLarderOverview(larderJson["user_description"])
+
+
             }catch(err){
                 console.error(String(err));
+                navigate(`/home/`);
             }
         }
         loadLarder();
@@ -39,7 +47,7 @@ export default function ListerProposerScreen(){
             <div id="general-larder-info">
                 <textarea defaultValue={larderOverview}/>
             </div>
-            <FooditemTable fooditems = {[]} categoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
+            <FooditemTable loadedFoodItems = { [ ] } loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
 
             <div id="fooditem-specifics">
                 <div>
