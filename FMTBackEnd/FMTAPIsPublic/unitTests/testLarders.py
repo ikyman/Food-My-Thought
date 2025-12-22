@@ -4,7 +4,6 @@ from FMTAPIsPublic import views
 from FMTAPIsPublic.models import UserLarder, FoodItem
 from datetime import date, timedelta
 
-
 User = get_user_model()
 
 class UserLarderTestCase(TestCase): 
