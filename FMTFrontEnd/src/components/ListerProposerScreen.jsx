@@ -8,6 +8,7 @@ import { FoodItem } from "./FoodItem"
 
 
 import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
+import { useLarderFooditemsContext } from '../context/LarderFooditemsContext/LarderFooditemsContext'
 
 
 
