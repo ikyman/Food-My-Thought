@@ -12,8 +12,6 @@ export default function LPTpplbar(){
         <button id="undo" className="lister-only">Undo</button>
         <button id="redo" className="lister-only">Redo</button>
         <button id="get-larder-link" className="lister-only">Get Larder Link</button>
-
-
     </div>
     );
 }

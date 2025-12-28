@@ -8,13 +8,12 @@ import { FoodItem ,renderFoodItem } from "./FoodItem"
  * - fooditems: array of objects, each with at least
  *   { id?, name, estimated_expiration, category1, category2 }
  */
-export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, viewAsOwner}) {
+export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, viewAsOwner, onFoodItemUpdate}) {
     const [categoryNames, setCategoryNames] = useState(loadedCategoryNames)
-    const [foodItems, setFoodItems] = useState(loadedFoodItems);
 
     const addFoodItem = () =>{
-        const newFoodItem = new FoodItem({})
-        setFoodItems([...foodItems, newFoodItem]);
+        const newFoodItems = [...loadedFoodItems, new FoodItem({})];
+        onFoodItemUpdate(newFoodItems);
 
     }
 
@@ -31,12 +30,12 @@ export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, vi
                     </tr>
                 </thead>
                 <tbody>
-                    {foodItems.length === 0 ? (
+                    {loadedFoodItems.length === 0 ? (
                         <tr className="fooditem-entry">
                             <td colSpan={4}>No food items in this larder yet.</td>
                         </tr>
                     ) : (
-                        foodItems.map((item) => (
+                        loadedFoodItems.map((item) => (
                             renderFoodItem(item)
                         ))
                     )}

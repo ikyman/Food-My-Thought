@@ -4,6 +4,8 @@ import AccountToolbar from './AccountToolbar'
 import FooditemTable from './FooditemTable';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { FoodItem } from "./FoodItem"
+
 
 import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
 
@@ -14,9 +16,7 @@ export default function ListerProposerScreen(){
     const {getNonHTML} = useQueryDjangoBackendContext()
     const [viewAsOwner, setViewAsOwner] = useState(false);
     const [larderOverview, setLarderOverview] = useState("This box can only be edited by listers. It is a general description of the larder.")
-    const [larder, setLarder] = useState(null);
-
-    let loadedFoodItems = []
+    const [loadedFoodItems, setLoadedFoodItems] = useState([]);
 
     const navigate = useNavigate()
 
@@ -26,17 +26,26 @@ export default function ListerProposerScreen(){
                 const larderResponse = await getNonHTML(`/larder/${url_exten}/`);
                 const larderJson = await larderResponse.json();
                 setViewAsOwner(larderJson["display_as_owner"] )
-                setLarder(larderJson);
                 setLarderOverview(larderJson["user_description"])
-
+                let lfi = [];
+                for (let i = 0; i < larderJson["fooditems"].length; ++i){
+                    const newFoodItem = new FoodItem( larderJson["fooditems"][i]);
+                    lfi.push(newFoodItem);
+                    setLoadedFoodItems( (oldFoodItems) => [...oldFoodItems, newFoodItem] );
+                }
+                setLoadedFoodItems(lfi);
 
             }catch(err){
                 console.error(String(err));
-                navigate(`/home/`);
+                //navigate(`/home/`);
             }
         }
         loadLarder();
     }, []);
+
+    const updateFoodItemList = (newLFI) =>{
+        setLoadedFoodItems(newLFI)
+    }
 
 
     return (
@@ -47,7 +56,7 @@ export default function ListerProposerScreen(){
             <div id="general-larder-info">
                 <textarea defaultValue={larderOverview}/>
             </div>
-            <FooditemTable loadedFoodItems = { [ ] } loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
+            <FooditemTable loadedFoodItems = { loadedFoodItems } loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner} onFoodItemUpdate = {updateFoodItemList}/>
 
             <div id="fooditem-specifics">
                 <div>
