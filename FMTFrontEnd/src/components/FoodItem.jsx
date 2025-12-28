@@ -24,14 +24,13 @@ export function renderFoodItem(foodItem){
         //currentlyFocused = document.activeElement;
 
         if (foodItem.name){
-            console.log(foodItem)
             const foodPostResponse = await csrfPost("/fooditems/", {
                 "larder": url_exten,
-                "id" : foodItem.id,
-                "password": foodItem.name}
+                "id" : foodItem.id || "",
+                "name": foodItem.name}
             );
             if (foodPostResponse.ok){
-                if (foodPostResponse.status = 201){
+                if (foodPostResponse.status == 201){
                     const responseBody = await foodPostResponse.json();
                     foodItem.id = responseBody["id"];
 

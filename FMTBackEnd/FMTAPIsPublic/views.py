@@ -3,6 +3,7 @@ from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
+from django.forms.models import model_to_dict
 from .models import UserLarder, FoodItem
 from datetime import date, timedelta
 from django.core import serializers
@@ -92,7 +93,7 @@ def getLarderByURLext(request, url_exten):
   if QueryingOwn:
    foundLarder = UserLarder(url_exten = request.user, discontinue_date = date.today() + timedelta(days = 42069))
    foundLarder.save()
-   statuscode = 201      
+   statuscode = 201
   else:
    statuscode = 404
  except:
@@ -105,43 +106,42 @@ def getLarderByURLext(request, url_exten):
  responseJSONBody["user_description"] = foundLarder.user_description
  responseJSONBody["cats"] = (foundLarder.cat1, foundLarder.cat2)
  responseJSONBody["live"] = QueryingOwn or foundLarder.discontinue_date > date.today()
- responseJSONBody["fooditems"] = list(FoodItem.objects.filter(larder = foundLarder) )
+ responseJSONBody["fooditems"] = list(map (model_to_dict, FoodItem.objects.filter(larder = foundLarder)  ) )
   
  return  JsonResponse(responseJSONBody, status = statuscode)
 
 @require_POST
 def postFoodItem(request):
- fooditem_id = request.POST.get("id", None)
+ fooditem_id = request.POST.get("id")
  byIDQuerySet = []
- if fooditem_id: byIDQuerySet = list(FoodItem.objects.filter(id = fooditem_id)) 
+ if fooditem_id: byIDQuerySet = list(FoodItem.objects.filter(id = int(fooditem_id) )) 
  found_foodItem = None
  if len(byIDQuerySet):
   found_foodItem = byIDQuerySet[0]
+
+ wrongUser = (not request.user.is_authenticated) or (request.POST.get("larder",None) != str(request.user.url_exten))
+ larder_mismatch = found_foodItem and found_foodItem.larder.url_exten != request.user 
  
- wrongUser = (not request.user.is_authenticated) or (request["larder"] != request.user.url_exten)
- larder_mismatch = found_foodItem and found_foodItem.larder.url_exten != request.user.url_exten 
-  
  if wrongUser or larder_mismatch:
   return HttpResponse(status = 401, reason = "Adding food to Larder User doesn't own. Blocked.")
  
  statuscode = 200 
  
  newName = request.POST["name"]
- newExpirationDate = request.POST["expiry_date"]
- newCat1Value = request.POST["cat1"]
- newCat2Value = request.POST["cat2"]
+ newExpirationDate = request.POST.get("expiry_date", "")
+ newCat1Value = request.POST.get("cat1", "")
+ newCat2Value = request.POST.get("cat2", "")
  
  if not found_foodItem:
   if not bool(newExpirationDate):
    newExpirationDate = date.today() + timedelta(days = 42069)
-  found_foodItem = FoodItem(name = newName, estimated_expiration_date = newExpirationDate, cat1_value = newCat1Value, cat2_value = newCat2Value)
-  found_foodItem.save()
-  statuscode = 201
+  foundLarder = UserLarder.objects.get(url_exten = request.user.url_exten) 
+  found_foodItem = FoodItem(larder = foundLarder, name = newName, estimated_expiration_date = newExpirationDate, cat1_value = newCat1Value, cat2_value = newCat2Value)
+  statuscode = 201 
  else:
   if newName: found_foodItem.name = newName
   if newExpirationDate: found_foodItem.estimated_expiration_date = newExpirationDate
   if newCat1Value: found_foodItem.cat1_value = newCat1Value
-  if newCat2Value: found_foodItem.cat2_value= newCat2Value
-  found_foodItem.save()  
- print(serializers.serialize("json", found_foodItem), "< Oi, print m80" )
- return JsonResponse(serializers.serialize("json", found_foodItem), status = statuscode) 
+  if newCat2Value: found_foodItem.cat2_value = newCat2Value
+ found_foodItem.save()  
+ return JsonResponse(model_to_dict(found_foodItem), status = statuscode) 

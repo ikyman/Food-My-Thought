@@ -14,8 +14,8 @@ class UserLarder(models.Model):
 
 class FoodItem(models.Model):
  id = models.AutoField(primary_key=True)
- name = models.CharField(max_length=100)
+ name = models.CharField(max_length=100,)
  estimated_expiration_date = models.DateField()
- cat1_value = models.CharField(max_length=30)
- cat2_value = models.CharField(max_length=30)
+ cat1_value = models.CharField(max_length=30, default = "")
+ cat2_value = models.CharField(max_length=30, default = "")
  larder = models.ForeignKey(UserLarder, on_delete=models.CASCADE, related_name='food_items')
