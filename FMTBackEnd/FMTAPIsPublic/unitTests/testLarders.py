@@ -91,3 +91,24 @@ class LarderByURLExtenTestCase(TestCase):
   # Verify larder was created
   created_larder = UserLarder.objects.filter(url_exten=self.thirdUser)
   self.assertEqual(len(created_larder), 1, "Larder should be created when user accesses their own non-existent larder")
+  
+class RandomLarderTestCase(TestCase): 
+ def setUp(self):
+  self.client = Client()
+ def testRandomFilteredLarder():
+  self.testUser = User.objects.create_user("testing@unit.test", "testPassword");    
+  self.liveLarder = UserLarder.objects.create(url_exten=self.testUser, user_description = "Alive Larder",
+                                             cat1 = "Category1: Zodiac", cat2 = "Category2: Chinese Zodiac",
+                                             discontinue_date = date.today() + timedelta(days=50))
+  self.deadLarder = UserLarder.objects.create(url_exten=self.testUser, user_description = "Test Larder1",
+                                             cat1 = "Category1: Zodiac", cat2 = "Category2: Chinese Zodiac",
+                                             discontinue_date = date.today() + timedelta(days=50))
+  
+  self.assertEqual(True, False, "This should test, that with 2 larders, One dead and one alive, querying for a live larder will return the live larder, and vice-versa for querying a dead larder.")
+ def test404IfNotMatching():
+  self.assertEqual(True, False, "Ask for a live larder when there's only dead larder, or vice-versa? Get a 404. The Front-end will then return to the home screen")
+ def testTotalRandom():
+  self.assertEqual(True, False, "If there's only a dead larder, return that. If there's only a live larder, return that> If there's a better way to test this total randomness, I'd like to know.")
+ 
+  
+  
