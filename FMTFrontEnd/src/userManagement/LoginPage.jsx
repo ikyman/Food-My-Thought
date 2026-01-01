@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage(){
     const [error, setError] = useState("");
-    const {getHTML, csrfPost} = useQueryDjangoBackendContext();
+    const {getHTML, getNonHTML, csrfPost} = useQueryDjangoBackendContext();
     const navigate = useNavigate();
 
 
@@ -30,6 +30,11 @@ export default function LoginPage(){
             setError("");
             try{
                 getHTML("/usrs/signin/")
+                const ownLarderResponse = await getNonHTML("/larder/");
+                if (ownLarderResponse.ok){
+                    console.log(ownLarderResponse);
+                    navigate(`/larder/${ownLarderResponse.headers.get("url_exten")}`);
+                }
             }catch(err){
                 setError(String(err));
             }

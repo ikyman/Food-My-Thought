@@ -89,9 +89,11 @@ CORS_ALLOW_HEADERS = (
     *default_headers,
     "x_csrftoken",
     "http_x_csrftoken",
-    "savedextraheader",
-    "pointlessextra"
 )
+
+CORS_EXPOSE_HEADERS = [
+    "url_exten"
+]
 
 ROOT_URLCONF = 'FMTAPIsPublic.urls'
 
