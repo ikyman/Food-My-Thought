@@ -12,7 +12,7 @@ import LoginPage from "./userManagement/LoginPage"
 import LogupPage from "./userManagement/LogupPage"
 import TestPost from './components/TestPost';
 
-import { LarderFooditemsContextProvider} from './context/LarderFooditemsContext/LarderFooditemsContextProvider'
+import { LarderContextProvider} from './context/LarderContext/LarderContextProvider'
 
 
 export default function WebPageNavigation(){
@@ -26,9 +26,9 @@ export default function WebPageNavigation(){
                 />
                 <Route
                     path="/larder/:url_exten"
-                    element={<LarderFooditemsContextProvider>
+                    element={<LarderContextProvider>
                                 <ListerProposerScreen/>
-                            </LarderFooditemsContextProvider>
+                            </LarderContextProvider>
                             }
                 />
                 <Route

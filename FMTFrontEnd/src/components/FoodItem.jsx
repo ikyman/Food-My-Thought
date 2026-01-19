@@ -1,8 +1,7 @@
 import React, { useState, useRef} from 'react';
-import { useParams } from 'react-router-dom';
 
-import { useQueryDjangoBackendContext } from '../context/QueryDjangoBackendContext/QueryDjangoBackendContext'
-import FooditemTable from './FooditemTable';
+import { useLarderContext } from '../context/LarderContext/LarderContext'
+
 
 
 export class FoodItem{
@@ -16,30 +15,10 @@ export class FoodItem{
 }
 
 export function renderFoodItem(foodItem){  
-    const { csrfPost} = useQueryDjangoBackendContext()
-    const { url_exten } = useParams();
+    const {backEndSave} = useLarderContext();
 
     const foodItemToBackEnd = async (e) => {
-        //lostFocus = e.target;
-        //currentlyFocused = document.activeElement;
-
-        if (foodItem.name){
-            const foodPostResponse = await csrfPost("/fooditems/", {
-                "larder": url_exten,
-                "id" : foodItem.id || "",
-                "name": foodItem.name}
-            );
-            if (foodPostResponse.ok){
-                if (foodPostResponse.status == 201){
-                    const responseBody = await foodPostResponse.json();
-                    foodItem.id = responseBody["id"];
-
-                }
-            }else{
-                console.log(foodPostResponse);
-            }
-
-        }
+        backEndSave(foodItem)
     }
 
     return (<tr className="fooditem-entry" tabIndex="0" key={foodItem.id} onBlur = {(e) => {foodItemToBackEnd(e);} }>

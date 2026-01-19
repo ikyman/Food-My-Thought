@@ -1,5 +1,8 @@
-import React, { useState, useRef} from 'react';
-import { FoodItem ,renderFoodItem } from "./FoodItem"
+import React, { useState} from 'react';
+
+import { useLarderContext } from '../context/LarderContext/LarderContext'
+
+import { FoodItem, renderFoodItem } from "./FoodItem"
 
 /**
  * Renders the table of food items for a larder.
@@ -8,13 +11,12 @@ import { FoodItem ,renderFoodItem } from "./FoodItem"
  * - fooditems: array of objects, each with at least
  *   { id?, name, estimated_expiration, category1, category2 }
  */
-export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, viewAsOwner, onFoodItemUpdate}) {
+export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
     const [categoryNames, setCategoryNames] = useState(loadedCategoryNames)
+    const larderContext = useLarderContext();
 
     const addFoodItem = () =>{
-        const newFoodItems = [...loadedFoodItems, new FoodItem({})];
-        onFoodItemUpdate(newFoodItems);
-
+        larderContext.addFoodItem()
     }
 
     return (
@@ -30,12 +32,12 @@ export default function FooditemTable({ loadedFoodItems, loadedCategoryNames, vi
                     </tr>
                 </thead>
                 <tbody>
-                    {loadedFoodItems.length === 0 ? (
+                    {larderContext.getFoodItems().length === 0 ? (
                         <tr className="fooditem-entry">
                             <td colSpan={4}>No food items in this larder yet.</td>
                         </tr>
                     ) : (
-                        loadedFoodItems.map((item) => (
+                        larderContext.getFoodItems().map((item) => (
                             renderFoodItem(item)
                         ))
                     )}
