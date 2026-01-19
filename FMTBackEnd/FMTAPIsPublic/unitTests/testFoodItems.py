@@ -8,7 +8,6 @@ User = get_user_model()
 
 class FoodItemTestCase(TestCase): 
  def setUp(self):
-  self.client = Client()  
   self.testUser = User.objects.create_user("testing@unit.test", "testPassword"); 
   self.otherUser = User.objects.create_user("other@unit.test", "testPassword");  
   self.testLarder = UserLarder(url_exten = self.testUser, discontinue_date = date.today() + timedelta(days = 42069))
