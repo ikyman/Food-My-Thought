@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 from django.forms.models import model_to_dict
-from .models import UserLarder, FoodItem
+from .models import UserLarder, FoodItem, default_larder_expiration
 from datetime import date, timedelta
 from django.core import serializers
 
@@ -91,7 +91,7 @@ def getLarderByURLext(request, url_exten):
   foundLarder = UserLarder.objects.get(url_exten = url_exten)
  except UserLarder.DoesNotExist:
   if QueryingOwn:
-   foundLarder = UserLarder(url_exten = request.user, discontinue_date = date.today() + timedelta(days = 42069))
+   foundLarder = UserLarder(url_exten = request.user, discontinue_date = default_larder_expiration())
    foundLarder.save()
    statuscode = 201
   else:
@@ -134,7 +134,7 @@ def postFoodItem(request):
  
  if not found_foodItem:
   if not bool(newExpirationDate):
-   newExpirationDate = date.today() + timedelta(days = 42069)
+   newExpirationDate = default_larder_expiration()
   foundLarder = UserLarder.objects.get(url_exten = request.user.url_exten) 
   found_foodItem = FoodItem(larder = foundLarder, name = newName, estimated_expiration_date = newExpirationDate, cat1_value = newCat1Value, cat2_value = newCat2Value)
   statuscode = 201 
