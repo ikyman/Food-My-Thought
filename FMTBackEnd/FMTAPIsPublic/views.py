@@ -91,7 +91,7 @@ def getLarderByURLext(request, url_exten):
   foundLarder = UserLarder.objects.get(url_exten = url_exten)
  except UserLarder.DoesNotExist:
   if QueryingOwn:
-   foundLarder = UserLarder(url_exten = request.user, discontinue_date = default_larder_expiration())
+   foundLarder = UserLarder(url_exten = request.user)
    foundLarder.save()
    statuscode = 201
   else:
@@ -114,7 +114,7 @@ def getLarderByURLext(request, url_exten):
 def postFoodItem(request):
  fooditem_id = request.POST.get("id")
  byIDQuerySet = []
- if fooditem_id: byIDQuerySet = list(FoodItem.objects.filter(id = int(fooditem_id) )) 
+ if fooditem_id: byIDQuerySet = list(FoodItem.objects.filter(id = int(fooditem_id) ))
  found_foodItem = None
  if len(byIDQuerySet):
   found_foodItem = byIDQuerySet[0]
@@ -128,19 +128,18 @@ def postFoodItem(request):
  statuscode = 200 
  
  newName = request.POST["name"]
- newExpirationDate = request.POST.get("expiry_date", "")
+ newExpirationDate = request.POST.get("expiry_date")
  newCat1Value = request.POST.get("cat1", "")
  newCat2Value = request.POST.get("cat2", "")
  
  if not found_foodItem:
-  if not bool(newExpirationDate):
-   newExpirationDate = default_larder_expiration()
-  foundLarder = UserLarder.objects.get(url_exten = request.user.url_exten) 
-  found_foodItem = FoodItem(larder = foundLarder, name = newName, estimated_expiration_date = newExpirationDate, cat1_value = newCat1Value, cat2_value = newCat2Value)
+  foundLarder = UserLarder.objects.get(url_exten=request.user.url_exten)
+
+  found_foodItem = FoodItem(larder = foundLarder, name = newName, estimated_expiration_date = newExpirationDate or None, cat1_value = newCat1Value, cat2_value = newCat2Value)
   statuscode = 201 
  else:
   if newName: found_foodItem.name = newName
-  if newExpirationDate: found_foodItem.estimated_expiration_date = newExpirationDate
+  if "expiry_date" in request.POST: found_foodItem.estimated_expiration_date = newExpirationDate or None
   if newCat1Value: found_foodItem.cat1_value = newCat1Value
   if newCat2Value: found_foodItem.cat2_value = newCat2Value
  found_foodItem.save()  
