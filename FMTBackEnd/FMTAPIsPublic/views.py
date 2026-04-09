@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 from django.forms.models import model_to_dict
@@ -51,20 +50,21 @@ def userSignOut(request):
  return HttpResponse()
 
 @require_GET
-def getRandomLarder(request, randomization_preference = "live-only"):
- if randomization_preference == "live-only":
-  pass
- elif randomization_preference == "dead-only":
-  pass
- elif randomization_preference == "true-random":
-  pass
+def getRandomLarder(request):
+ randomization_preference = request.GET.get( "randomness-level", "only-live")
+ if randomization_preference == "only-live":
+  foundLarders = UserLarder.objects.filter(discontinue_date__gte = date.today() )
+ elif randomization_preference == "only-dead":
+  foundLarders = UserLarder.objects.filter(discontinue_date__lt = date.today() )
+ elif randomization_preference == "total-random":
+  foundLarders = UserLarder.objects.filter()
  else:
-  return HttpResponse("Unknown Randomization Preference '" + randomization_preference + "'", status_code = 400)
- objet = {"Keyboard":"qwertyuip",
-          "number":9,
-          "phone":"androidn"}
- print(HttpResponse(objet).headers)
- return HttpResponse(objet)
+  return HttpResponse("Unknown Randomization Preference '" + randomization_preference + "'", status = 400)
+ randomSelectedLarder = foundLarders.order_by("?").first()
+ if randomSelectedLarder == None:
+    return HttpResponse(status = 404)
+
+ return  JsonResponse({"url_exten" : randomSelectedLarder.url_exten.url_exten} , status = 200)
 
 @require_GET
 def getOwnLarder(request):

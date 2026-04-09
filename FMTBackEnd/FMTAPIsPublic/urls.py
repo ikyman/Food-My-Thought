@@ -24,9 +24,10 @@ urlpatterns = [
     path('usrs/signout/', views.userSignOut),  
     path('usrs/signup/', views.userSignUp),  
     
-    path('randomlarder/<str:randomization_preference>', views.getRandomLarder),
     path('larder/', views.getOwnLarder),
-    path('larder/<int:url_exten>/', views.getLarderByURLext),
+    path('larders/url-extension/<int:url_exten>/', views.getLarderByURLext),
+    path('larders/url-extension/', views.getRandomLarder),
+
     
     path(r'fooditems/', views.postFoodItem),
     
