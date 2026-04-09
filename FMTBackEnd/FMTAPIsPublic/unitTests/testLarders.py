@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model, login
 from FMTAPIsPublic import views
 from FMTAPIsPublic.models import UserLarder, FoodItem
 from datetime import date, timedelta
+from .fmtViewTestcase import FmtViewTestcase
 
 User = get_user_model()
 
@@ -14,15 +15,15 @@ class UserLarderTestCase(TestCase):
   self.client.login(email = "testing@unit.test", password = "testPassword");  
   
  def testGetOwnLarder(self):
-  existing_larder = UserLarder.objects.filter(url_exten = self.testUser)
-  self.assertEqual(len(existing_larder), 0, "User Created Without Crreating Larder")
+  no_larder_created = UserLarder.objects.filter(url_exten = self.testUser)
+  self.assertEqual(len(no_larder_created), 0, "User Created in setup Without Creating Larder")
 
   getOwnLarderResponse = self.client.get("/larder/") 
   self.assertEqual(getOwnLarderResponse.status_code, 200)
   self.assertEqual(int(getOwnLarderResponse["url_exten"]), self.testUrl_Exten)
   
-  still_existing_larder = UserLarder.objects.filter(url_exten = self.testUser)
-  self.assertEqual(len(still_existing_larder), 0, "No need to create a larder if all I'm doing is grabbing the Larder URL_extension from the User session token")  
+  no_larder_created = UserLarder.objects.filter(url_exten = self.testUser)
+  self.assertEqual(len(no_larder_created), 0, "No need to create a larder if all I'm doing is grabbing the Larder URL_extension from the User session token")  
   
 
 class LarderByURLExtenTestCase(FmtViewTestcase):
