@@ -44,12 +44,12 @@ class LarderByURLExtenTestCase(FmtViewTestcase):
   # Test Case 1: 404 if URL extension doesn't exist AND user session id != that url extension
   # User 1 tries to access a non-existent larder (e.g., url_exten = 999)
   nonExistentUrlExten = 999
-  response = self.client.get(f"/larder/{nonExistentUrlExten}/")
+  response = self.client.get(f"/larders/url-extension/{nonExistentUrlExten}/")
   self.assertEqual(response.status_code, 404, "Should return 404 when accessing non-existent larder that doesn't belong to user")
  
  def testSuccess_OwnLarderExists(self):
   # Test Case 2: Success if requested url_extension matches user session AND larder exists
-  response = self.client.get(f"/larder/{self.testUrl_Exten}/")
+  response = self.client.get(f"/larders/url-extension/{self.testUrl_Exten}/")
   self.assertEqual(response.status_code, 200, "Should return 200 when user accesses their own existing larder")
   response_data = response.json()
   self.assertEqual(response_data["url_exten"], self.testUrl_Exten)
@@ -58,7 +58,7 @@ class LarderByURLExtenTestCase(FmtViewTestcase):
  def testSuccess_OtherUserLarderExists(self):
   # Test Case 3: Success if larder exists (regardless of who's asking)
   # User 1 accesses User 2's existing larder
-  response = self.client.get(f"/larder/{self.otherUrl_Exten}/")
+  response = self.client.get(f"/larders/url-extension/{self.otherUrl_Exten}/")
   self.assertEqual(response.status_code, 200, "Should return 200 when accessing another user's existing larder")
   response_data = response.json()
   self.assertEqual(response_data["url_exten"], self.otherUrl_Exten)
@@ -75,7 +75,7 @@ class LarderByURLExtenTestCase(FmtViewTestcase):
   self.assertEqual(len(no_larder), 0, "Third user should not have a larder initially")
   
   # Access own larder - should create it
-  response = self.client.get(f"/larder/{self.thirdUrl_Exten}/")
+  response = self.client.get(f"/larders/url-extension/{self.thirdUrl_Exten}/")
   self.assertEqual(response.status_code, 201, "Should return 201 when creating larder for user accessing their own non-existent larder")
   response_data = response.json()
   self.assertEqual(response_data["url_exten"], self.thirdUrl_Exten)
