@@ -3,19 +3,17 @@ from django.contrib.auth import get_user_model, login
 from FMTAPIsPublic import views
 from FMTAPIsPublic.models import UserLarder, FoodItem
 from datetime import date, timedelta
+from .fmtViewTestcase import FmtViewTestcase
 
-User = get_user_model()
 
-class FoodItemTestCase(TestCase): 
+class FoodItemTestCase(FmtViewTestcase): 
  def setUp(self):
-  self.testUser = User.objects.create_user("testing@unit.test", "testPassword"); 
-  self.otherUser = User.objects.create_user("other@unit.test", "testPassword");  
-  self.testLarder = UserLarder(url_exten = self.testUser, discontinue_date = date.today() + timedelta(days = 42069))
-  self.testLarder.save()
-  
-  self.testUrl_Exten = self.testUser.url_exten
-  self.client.login(email = "testing@unit.test", password = "testPassword");
-  
+    super().setUp()
+    (self.testUser, self.testLarder) = self.createTestLarder()
+    self.noLarderUser = self.createTestUserNoLarder()
+    self.testUrl_Exten = self.testUser.url_exten
+
+    self.loginUser(self.testUser)  
  
  def testAddFoodItem(self):
   no_food = FoodItem.objects.filter()

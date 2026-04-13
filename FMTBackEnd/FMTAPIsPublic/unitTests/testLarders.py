@@ -7,16 +7,15 @@ from .fmtViewTestcase import FmtViewTestcase
 
 User = get_user_model()
 
-class UserLarderTestCase(TestCase): 
+class UserLarderTestCase(FmtViewTestcase): 
  def setUp(self):
-  self.client = Client()  
-  self.testUser = User.objects.create_user("testing@unit.test", "testPassword");  
-  self.testUrl_Exten = self.testUser.url_exten
-  self.client.login(email = "testing@unit.test", password = "testPassword");  
+  super().setUp()
+  self.testUser = self.createTestUserNoLarder()
+  self.loginUser(self.testUser) 
   
  def testGetOwnLarder(self):
   no_larder_created = UserLarder.objects.filter(url_exten = self.testUser)
-  self.assertEqual(len(no_larder_created), 0, "User Created in setup Without Creating Larder")
+  self.assertEqual(len(no_larder_created), 0, "User Creation on its own should not Creata a Larder")
 
   getOwnLarderResponse = self.client.get("/larder/") 
   self.assertEqual(getOwnLarderResponse.status_code, 200)
@@ -28,25 +27,18 @@ class UserLarderTestCase(TestCase):
 
 class LarderByURLExtenTestCase(FmtViewTestcase):
  def setUp(self): 
-  # Create first user with larder
-  self.super().setUp()
-  self.testUser = User.objects.create_user("testing@unit.test", "testPassword");  
+  super().setUp()
+  (self.testUser, self.testLarder) = self.createTestLarder()
   self.testUrl_Exten = self.testUser.url_exten
-  self.client.login(email = "testing@unit.test", password = "testPassword");  
-  self.ownLarder = UserLarder.objects.create(url_exten=self.testUser, user_description = "Test Larder1",
-                                             cat1 = "Category1: Zodiac", cat2 = "Category2: Chinese Zodiac",
-                                             discontinue_date = date.today() + timedelta(days=50))
-  
   # Create second user with larder
-  self.otherUser = User.objects.create_user("other@unit.test", "testPassword");
+  (self.otherUser, self.otherLarder) = self.createTestLarder()
   self.otherUrl_Exten = self.otherUser.url_exten
-  self.otherLarder = UserLarder.objects.create(url_exten=self.otherUser, user_description = "Test Larder2",
-                                               cat1 = "Category1: Cat Breed", cat2 = "Category2: Is_Canned_Tuna",
-                                               discontinue_date = date.today() + timedelta(days=50))
   
   # Create third user without larder
-  self.thirdUser = User.objects.create_user("third@unit.test", "testPassword");
+  self.thirdUser = self.createTestUserNoLarder()
   self.thirdUrl_Exten = self.thirdUser.url_exten
+
+  self.loginUser(self.testUser)
   
  def test404_OtherUserLarderDoesNotExist(self):
   # Test Case 1: 404 if URL extension doesn't exist AND user session id != that url extension
