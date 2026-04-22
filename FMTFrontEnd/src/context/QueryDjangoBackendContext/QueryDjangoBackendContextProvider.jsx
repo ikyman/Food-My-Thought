@@ -22,9 +22,9 @@ export const QueryDjangoBackendContextProvider = ({children}) => {
 
 	const getNonHTML = async (endpoint) => {
 		const getResponse = await fetch(`${backendOrigin}${endpoint}`, { mode:'cors',credentials: 'include' });
-        if (!getResponse.ok){
+        /*if (!getResponse.ok){
             throw new Error(`Failed to request from Back-End: ${getResponse.status}`);
-        }
+        }*/
         return getResponse;
 	}
 

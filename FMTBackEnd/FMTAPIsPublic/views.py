@@ -69,7 +69,7 @@ def getRandomLarder(request):
 @require_GET
 def getOwnLarder(request):
  if not request.user.is_authenticated:
-  return HttpResponse(status = 501, reason = "TODO: Redirect not-logged-in users to login page.")
+  return HttpResponse(status = 501, reason = "Not Logged in; Anonymous larders not supported.")
  session_user_url_exten = request.user.url_exten
 
  response = HttpResponse(status = 200)
@@ -134,7 +134,6 @@ def postFoodItem(request):
  
  if not found_foodItem:
   foundLarder = UserLarder.objects.get(url_exten=request.user.url_exten)
-
   found_foodItem = FoodItem(larder = foundLarder, name = newName, estimated_expiration_date = newExpirationDate or None, cat1_value = newCat1Value, cat2_value = newCat2Value)
   statuscode = 201 
  else:
