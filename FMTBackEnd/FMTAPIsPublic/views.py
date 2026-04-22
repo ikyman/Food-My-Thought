@@ -68,9 +68,10 @@ def getRandomLarder(request):
 
 @require_GET
 def getOwnLarder(request):
- if not request.user.is_authenticated:
-  return HttpResponse(status = 501, reason = "Not Logged in; Anonymous larders not supported.")
- session_user_url_exten = request.user.url_exten
+ if request.user.is_authenticated:
+  session_user_url_exten = request.user.url_exten
+ else:
+  session_user_url_exten = -1
 
  response = HttpResponse(status = 200)
  response["url_exten"] = session_user_url_exten

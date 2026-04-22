@@ -31,9 +31,9 @@ export default function LoginPage(){
             try{
                 getHTML("/usrs/signin/")
                 const ownLarderResponse = await getNonHTML("/larder/");
-                if (ownLarderResponse.ok){
-                    console.log(ownLarderResponse);
-                    navigate(`/larder/${ownLarderResponse.headers.get("url_exten")}`);
+                const ownURLExten = ownLarderResponse.headers.get("url_exten");
+                if (ownURLExten >= 0){
+                    navigate(`/larder/${ownURLExten}`);
                 }
             }catch(err){
                 setError(String(err));
