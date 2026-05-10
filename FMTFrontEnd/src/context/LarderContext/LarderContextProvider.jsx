@@ -14,7 +14,7 @@ export const LarderContextProvider = ({children}) => {
   const [foodItems, setFoodItems] = useState([]);
 
   const loadLarder = async () => {
-    const larderResponse = await getNonHTML(`/larder/${url_exten}/`);
+    const larderResponse = await getNonHTML(`/larders/url-extension/${url_exten}/`);
     const larderJson = await larderResponse.json();
     setViewAsOwner(larderJson["display_as_owner"] )
     setLarderOverview(larderJson["user_description"])
@@ -31,11 +31,10 @@ export const LarderContextProvider = ({children}) => {
   }
 
   const backEndSave = async (foodItem) => {
-
     if (foodItem.name){
       const foodPostResponse = await csrfPost("/fooditems/", {
           "larder": url_exten,
-          "id" : foodItem.id || "",
+          "id" : foodItem.id || null,// "",
           "name": foodItem.name}
       );
       if (foodPostResponse.ok){

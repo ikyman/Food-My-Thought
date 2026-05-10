@@ -13,14 +13,13 @@ export default function RandomLarderForm() {
         const formData = new FormData(event.target);
         
         try {
-            const response = await getNonHTML("/larders/url-extension?randomness-level=" + formData.get('liveliness'));
+            const response = await getNonHTML("/larders/url-extension/?randomness-level=" + formData.get('liveliness'));
 
-            if (response.status == 404){
-                navigate("/home")
-            }
             if (response.ok){
-                const jsonResponse = response.json();
+                const jsonResponse = await response.json();
                 navigate("/larder/" + jsonResponse.url_exten)
+            }else{
+                navigate("/home")
             }
            
         } catch (error) {

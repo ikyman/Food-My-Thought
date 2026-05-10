@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 import LPToolbar from './LPToolbar'
 import AccountToolbar from './AccountToolbar'
 import FooditemTable from './FooditemTable';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { FoodItem } from "./FoodItem"
 
 
 import { useLarderContext } from '../context/LarderContext/LarderContext'
