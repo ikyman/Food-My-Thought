@@ -40,7 +40,7 @@ export function renderFoodItem(foodItem){
                 >
                 <td><textarea className = "name-textarea" value = {foodItem.name} onChange = { (e) => {foodItem.name = e.target.value;}} ></textarea></td>
                 <td><textarea className = "date-textarea">{foodItem.estimated_expiration}</textarea></td>
-                <td><textarea className = "cat1-textarea">{foodItem.category1}</textarea></td>
-                <td><textarea className = "cat2-textarea">{foodItem.category2}</textarea></td>
+                <td><textarea className = "cat-textarea">{foodItem.category1}</textarea></td>
+                <td><textarea className = "cat-textarea">{foodItem.category2}</textarea></td>
             </tr>)
 }
