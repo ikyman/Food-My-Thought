@@ -15,11 +15,11 @@ class UserLarderTestCase(FmtViewTestcase):
   
  def testGetOwnLarder(self):
   no_larder_created = UserLarder.objects.filter(url_exten = self.testUser)
-  self.assertEqual(len(no_larder_created), 0, "User Creation on its own should not Creata a Larder")
+  self.assertEqual(len(no_larder_created), 0, "User Creation on its own should not Create a Larder")
 
   getOwnLarderResponse = self.client.get("/larder/") 
   self.assertEqual(getOwnLarderResponse.status_code, 200)
-  self.assertEqual(int(getOwnLarderResponse["url_exten"]), self.testUrl_Exten)
+  self.assertEqual(int(getOwnLarderResponse["url_exten"]), self.testUser.url_exten)
   
   no_larder_created = UserLarder.objects.filter(url_exten = self.testUser)
   self.assertEqual(len(no_larder_created), 0, "No need to create a larder if all I'm doing is grabbing the Larder URL_extension from the User session token")  
@@ -35,8 +35,8 @@ class LarderByURLExtenTestCase(FmtViewTestcase):
   self.otherUrl_Exten = self.otherUser.url_exten
   
   # Create third user without larder
-  self.thirdUser = self.createTestUserNoLarder()
-  self.thirdUrl_Exten = self.thirdUser.url_exten
+  self.noLarderUser = self.createTestUserNoLarder()
+  self.noLarderUserUrl_Exten = self.noLarderUser.url_exten
 
   self.loginUser(self.testUser)
   
@@ -68,40 +68,64 @@ class LarderByURLExtenTestCase(FmtViewTestcase):
   # Test Case 4: Success if requested url_extension matches user session (even if larder doesn't exist - creates it)
   # Switch to third user (who doesn't have a larder)
   self.client.logout()
-  self.client.login(email="third@unit.test", password="testPassword")
-  
+  self.loginUser(self.noLarderUser)
   # Verify larder doesn't exist
-  no_larder = UserLarder.objects.filter(url_exten=self.thirdUser)
+  no_larder = UserLarder.objects.filter(url_exten=self.noLarderUser)
   self.assertEqual(len(no_larder), 0, "Third user should not have a larder initially")
   
   # Access own larder - should create it
-  response = self.client.get(f"/larders/url-extension/{self.thirdUrl_Exten}/")
+  response = self.client.get(f"/larders/url-extension/{self.noLarderUserUrl_Exten}/")
   self.assertEqual(response.status_code, 201, "Should return 201 when creating larder for user accessing their own non-existent larder")
   response_data = response.json()
-  self.assertEqual(response_data["url_exten"], self.thirdUrl_Exten)
+  self.assertEqual(response_data["url_exten"], self.noLarderUserUrl_Exten)
   self.assertEqual(response_data["display_as_owner"], True, "is_owner should be true when user creates their own larder")
   
   # Verify larder was created
-  created_larder = UserLarder.objects.filter(url_exten=self.thirdUser)
+  created_larder = UserLarder.objects.filter(url_exten=self.noLarderUser)
   self.assertEqual(len(created_larder), 1, "Larder should be created when user accesses their own non-existent larder")
   
-#class RandomLarderTestCase(TestCase): 
- #def setUp(self):
-  #self.client = Client()
- #def testRandomFilteredLarder():
-  #self.testUser = User.objects.create_user("testing@unit.test", "testPassword");    
-  #self.liveLarder = UserLarder.objects.create(url_exten=self.testUser, user_description = "Alive Larder",
-                                             #cat1 = "Category1: Zodiac", cat2 = "Category2: Chinese Zodiac",
-                                             #discontinue_date = date.today() + timedelta(days=50))
-  #self.deadLarder = UserLarder.objects.create(url_exten=self.testUser, user_description = "Test Larder1",
-                                             #cat1 = "Category1: Zodiac", cat2 = "Category2: Chinese Zodiac",
-                                             #discontinue_date = date.today() + timedelta(days=50))
+class RandomLarderTestCase(FmtViewTestcase): 
+ def setUp(self):
+  super().setUp()
+ def testRandomFilteredLarder(self):
+  """Test, that with 2 larders, One dead and one alive, querying for a live larder will return the live larder, and vice-versa for querying a dead larder. """
+  (liveUser1, liveLarder1)  = self.createTestLarder()
+  (deadUser1, deadLarder1) = self.createTestLarder(discontinuation = date.today() - timedelta(days=50))
+
+  live_larder_queried = self.client.get("/larders/url-extension/")
+  dead_larder_queried = self.client.get("/larders/url-extension/", query_params={ "randomness-level" : "only-dead"})
   
-  #self.assertEqual(True, False, "This should test, that with 2 larders, One dead and one alive, querying for a live larder will return the live larder, and vice-versa for querying a dead larder.")
- #def test404IfNotMatching():
-  #self.assertEqual(True, False, "Ask for a live larder when there's only dead larder, or vice-versa? Get a 404. The Front-end will then return to the home screen")
- #def testTotalRandom():
-  #self.assertEqual(True, False, "If there's only a dead larder, return that. If there's only a live larder, return that> If there's a better way to test this total randomness, I'd like to know.")
- 
+  self.assertEqual(live_larder_queried.status_code, 200)
+  self.assertEqual(live_larder_queried.json()["url_exten"], liveUser1.url_exten, "Random live Larder querying could not find existing live larder")
+  self.assertEqual(dead_larder_queried.status_code, 200)
+  self.assertEqual(dead_larder_queried.json()["url_exten"], deadUser1.url_exten, "Random dead Larder querying could not find existing dead larder")
+
+ def test404IfNotMatching(self):
+    (deadUser1, deadLarder1)  = self.createTestLarder(discontinuation = date.today() - timedelta(days=50))
+    live_larder_queried = self.client.get("/larders/url-extension/")
+    self.assertEqual(live_larder_queried.status_code, 404, "Live larder query should not return dead larders if no live larders exist")
+
+    self.deleteTestUser(deadUser1.url_exten)
+
+    (liveUser1, liveLarder1)   = self.createTestLarder()
+    dead_larder_queried = self.client.get("/larders/url-extension/", query_params = { "randomness-level" : "only-dead"})
+    self.assertEqual(dead_larder_queried.status_code, 404, "Dead larder query should not return live larders if no dead larders exist")
+
+ def testTotalRandom(self):
+  """If there's only a dead larder, return that. If there's only a live larder, return that> If there's a better way to test this total randomness, I'd like to know."""
+  (deadUser1, deadLarder1)  = self.createTestLarder(discontinuation = date.today() - timedelta(days=50))
+  random_query = self.client.get("/larders/url-extension/", query_params={ "randomness-level" : "total-random"})
+
+  self.assertEqual(random_query.status_code, 200)
+  self.assertEqual(random_query.json()["url_exten"], deadUser1.url_exten, "Full Random should be able to return dead larders")
+  self.deleteTestUser(deadUser1.url_exten)
+
+  (liveUser1, liveLarder1)   = self.createTestLarder()
+  random_query = self.client.get("/larders/url-extension/", query_params={ "randomness-level" : "total-random"})
   
-  
+  self.assertEqual(random_query.status_code, 200)
+  self.assertEqual(random_query.json()["url_exten"], liveUser1.url_exten, "Full Random should be able to return live larders")
+  self.deleteTestUser(liveUser1.url_exten)
+
+  random_query = self.client.get("/larders/url-extension/", { "randomness-level" : "total-random"})
+  self.assertEqual(random_query.status_code, 404, "Full random returns 404 if no Larders exist")
