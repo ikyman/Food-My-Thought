@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef} from 'react';
 
 import { useLarderContext } from '../context/LarderContext/LarderContext'
 
@@ -12,25 +12,17 @@ export class FoodItem{
     }
 }
 
-export function renderFoodItem(foodItem){  
+export function FoodItemRow({foodItem}){  
     const {backEndSave} = useLarderContext();
+
+    const nameRef = useRef( foodItem.name); 
+    const dateRef = useRef( foodItem.estimated_expiration);
+    const cat1Ref = useRef( foodItem.category1 );
+    const cat2Ref = useRef( foodItem.category2 );
+
 
     const foodItemToBackEnd = async (e) => {
         backEndSave(foodItem)
-    }
-
-    const foodItemNav = (keyInput) =>{
-        const textareaCalled = document.activeElement;
-        if (textareaCalled.tagName !== "TEXTAREA"){
-            return
-        }
-        if (keyInput.key === "ArrowUp" || keyInput.key === "ArrowDown"){
-            const rce = new CustomEvent("RowChangeEvent", 
-                {detail: {callingFoodItem: foodItem.id, direction: keyInput.key}}
-            )
-            dispatchEvent(rce);
-            return;
-        }
     }
 
     return (<tr className="fooditem-entry" 
@@ -38,9 +30,9 @@ export function renderFoodItem(foodItem){
                 key={foodItem.id}
                 onBlur = {(e) => {foodItemToBackEnd(e);} }
                 >
-                <td><textarea className = "name-textarea" value = {foodItem.name} onChange = { (e) => {foodItem.name = e.target.value;}} ></textarea></td>
-                <td><textarea className = "date-textarea">{foodItem.estimated_expiration}</textarea></td>
-                <td><textarea className = "cat-textarea">{foodItem.category1}</textarea></td>
-                <td><textarea className = "cat-textarea">{foodItem.category2}</textarea></td>
+                <td><textarea className = "name-textarea" ref = {nameRef} ></textarea></td>
+                <td><textarea className = "date-textarea" ref = {dateRef} ></textarea></td>
+                <td><textarea className = "cat-textarea"  ref = {cat1Ref} ></textarea></td>
+                <td><textarea className = "cat-textarea"  ref = {cat2Ref} ></textarea></td>
             </tr>)
 }

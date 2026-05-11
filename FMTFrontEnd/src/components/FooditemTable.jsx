@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 
 import { useLarderContext } from '../context/LarderContext/LarderContext'
 
-import { FoodItem, renderFoodItem } from "./FoodItem"
+import { FoodItem, FoodItemRow } from "./FoodItem"
 
 /**
  * Renders the table of food items for a larder.
@@ -106,8 +106,8 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
                     <tr>
                         <th>Food Name</th>
                         <th>Estimated Expiration date</th>
-                        <th><textarea className='category-header'>{categoryNames[0]}</textarea></th>
-                        <th><textarea className='category-header'>{categoryNames[1]}</textarea></th>
+                        <th><textarea className='category-header' defaultValue={categoryNames[0]}></textarea></th>
+                        <th><textarea className='category-header' defaultValue={categoryNames[1]}></textarea></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,7 +117,7 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
                         </tr>
                     ) : (
                         larderContext.getFoodItems().map((item) => (
-                            renderFoodItem(item)
+                            <FoodItemRow foodItem={item}/>
                         ))
                     )}
                 </tbody>
