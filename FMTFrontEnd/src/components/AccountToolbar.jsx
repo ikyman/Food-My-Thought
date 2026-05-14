@@ -16,10 +16,10 @@ function AccountButtons(){
     const navigate = useNavigate();
 
     return (
-        <>
+        <div>
             <button id="signin" onClick={() => navigate('/login')}>&#62;Log in</button>
             <button id="signout" onClick={() => getNonHTML('/usrs/signout/')}>&#62;Log out</button>
-        </>
+        </div>
     );
 
 }

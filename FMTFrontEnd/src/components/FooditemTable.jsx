@@ -27,7 +27,7 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
         const currentRow = keyInput.target.closest("tr");
         const ctrlKeyed = keyInput.ctrlKey;
 
-        if (!textareaCalled || textareaCalled.tagName !== "TEXTAREA") {
+        if (!textareaCalled || textareaCalled.tagName !== "TEXTAREA" || textareaCalled.classList.contains("table-title-immutable")) {
             return;
         }
 
@@ -64,13 +64,7 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
             if (nextIndex === undefined){
                 return;
             }
-            if (keyInput.key === "ArrowDown" && fromCategoryNameRow){
-                selectedTextArea = foodItemRows[nextIndex].querySelectorAll("textarea")[currentFoodItemIndex+2];
-            }else if(nextIndex == 0 && !fromCategoryNameRow){
-                selectedTextArea = foodItemRows[nextIndex].querySelectorAll("textarea")[currentFoodItemIndex-2];       
-            }else{
-                selectedTextArea = foodItemRows[nextIndex].querySelectorAll("textarea")[currentFoodItemIndex];
-            }
+            selectedTextArea = foodItemRows[nextIndex].querySelectorAll("textarea")[currentFoodItemIndex];
         }
 
         if (keyInput.key === "ArrowLeft" || keyInput.key === "ArrowRight") {
@@ -95,6 +89,9 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
             }
             selectedTextArea = foodItemTextareas[nextIndex];
         }
+        if (selectedTextArea.classList.contains("table-title-immutable")){
+            return
+        }
         selectedTextArea.focus();
         keyInput.preventDefault();
     }
@@ -104,8 +101,8 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
             <table id="fooditem-table" onKeyDown={onFoodTableArrowNav}>
                 <thead>
                     <tr>
-                        <th>Food Name</th>
-                        <th>Estimated Expiration date</th>
+                        <th><textarea className = 'table-title-immutable' defaultValue={"Food Name"} readOnly tabIndex="-1" ></textarea></th>
+                        <th><textarea className = 'table-title-immutable' defaultValue={"Estimated Expiration date"} readOnly tabIndex="-1"></textarea></th>
                         <th><textarea className='category-header' defaultValue={categoryNames[0]}></textarea></th>
                         <th><textarea className='category-header' defaultValue={categoryNames[1]}></textarea></th>
                     </tr>

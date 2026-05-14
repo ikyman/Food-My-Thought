@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import ReactDOM from 'react-dom/client';
@@ -6,6 +6,7 @@ import { QueryDjangoBackendContextProvider} from './context/QueryDjangoBackendCo
 
 import WebPageNavigation from './WebPageNavigation';
 
+import "./styles.css"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

@@ -20,14 +20,14 @@ export default function ListerProposerScreen(){
 
 
     return (
-     <>
+     <div className="green-bkg whole-page">
         <LPToolbar/>
 
-        <div className="green-bkg">
+        <div className="larder-seperation">
             <div id="general-larder-info">
-                <textarea defaultValue={larderOverview}/>
+                <textarea id="user-summary" defaultValue={larderOverview}/>
+                <FooditemTable  loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
             </div>
-            <FooditemTable  loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
 
             <div id="fooditem-specifics">
                 <div>
@@ -62,6 +62,6 @@ export default function ListerProposerScreen(){
         <div className="advertisement">
             Buy some stuff!
         </div>
-    </>
+    </div>
     );
 }

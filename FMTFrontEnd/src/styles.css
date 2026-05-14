@@ -1,0 +1,81 @@
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+  }
+
+.whole-page{
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 10px);
+    width: calc(100vw - 10px);
+}
+.green-bkg{
+    background-color: ForestGreen;
+}
+
+.larder-seperation{
+    display:flex;
+    padding: 5px;
+}
+
+.larder-seperation > div{
+    flex-basis: 50%;
+}
+
+#user-summary{
+    font-size: 16pt;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    min-height: 20vh;
+    width: 80%;
+}
+
+#fooditem-table{
+    border-spacing: 0px;
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+
+}
+
+td, th{
+    padding: 0px;
+    border-width: 3px;
+    border-color:darkblue;
+    border-style: solid;
+    box-sizing: border-box; 
+}
+
+td > textarea, th > textarea{
+    /*background-color: red;*/
+    width: 100%;
+    resize: none;
+    padding: 0px;
+    border : 0px;
+    display: block;
+    box-sizing: border-box; 
+}
+
+th > textarea{
+    background-color:mediumaquamarine;
+    font-weight: bolder;
+
+}
+
+textarea.table-title-immutable:focus-visible{
+    outline: 0;
+}
+
+.toolbar{
+    display:flex;
+    background-color: cornflowerblue;
+    padding: 5px;
+    justify-content: space-between
+}
+
+.advertisement{
+    background-color: orange;
+    color : navy;
+    font-weight: bold;
+    text-align:center;
+}
