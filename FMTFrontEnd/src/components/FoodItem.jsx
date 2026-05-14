@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react';
+import React, { useEffect, useRef} from 'react';
 
 import { useLarderContext } from '../context/LarderContext/LarderContext'
 
@@ -22,8 +22,19 @@ export function FoodItemRow({foodItem}){
 
 
     const foodItemToBackEnd = async (e) => {
-        backEndSave(foodItem)
+        const savedFoodItemProps = new FoodItem({
+            "id" : foodItem.id,
+            "name" : nameRef.current.value,
+            "estimated_expiration_date" : dateRef.current.value,
+            "cat1_value" : cat1Ref.current.value,
+            "cat2_value" : cat2Ref.current.value
+        })
+        backEndSave(savedFoodItemProps)
     }
+
+    useEffect(() => {
+        nameRef.current.value = foodItem.name;
+    }, []);
 
     return (<tr className="fooditem-entry" 
                 tabIndex="0"
