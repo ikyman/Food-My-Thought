@@ -2,6 +2,7 @@ import React from 'react';
 import AccountToolbar from './AccountToolbar'
 import { useNavigate } from "react-router-dom";
 import RandomLarderForm from './RandomLarderForm'
+import ReturnToOwnLarderButton from './ReturnToOwnLarderButton'
 import AdSlot from './AdSlot'
 
 export default function HomeScreen(){
@@ -13,10 +14,8 @@ export default function HomeScreen(){
             <div>
                 <h1></h1>
                 <RandomLarderForm />
-                <button id="recipe-reccomend" onClick = { () => { navigate("/login") } }>List your Larder</button>
+                <ReturnToOwnLarderButton/>
             </div>
-
-            <AdSlot/>
 
             <AccountToolbar/>
         </div>

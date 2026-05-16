@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
+import ReturnToOwnLarderButton from "./ReturnToOwnLarderButton"
 
 export default function LPTpplbar(){
     const [userCode, setUserCode] = useState("The Default")
 
     return (
-    <div className="toolbar">
+    <div id = "lp-top-toolbar" className="toolbar">
         <div id="navigation-tools">
-            <button id="own-larder-return" className="logged-in-only has-larder-only">Return to Own Larder</button>
+            <ReturnToOwnLarderButton/>
             <button id="random-larder">Go to a Random Larder</button>
             <button id="cycle-liveliness">Cycle Liveliness</button>
         </div>
