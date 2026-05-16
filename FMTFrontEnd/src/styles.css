@@ -7,8 +7,8 @@ html, body, #root {
 .whole-page{
     display: flex;
     flex-direction: column;
-    height: calc(100vh);
-    width: calc(100vw);
+    height: 100%;/*calc(100vh);*/
+    width: 100%;
 }
 .green-bkg{
     background-color: ForestGreen;
@@ -54,12 +54,16 @@ td > textarea, th > textarea{
     border : 0px;
     display: block;
     box-sizing: border-box; 
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    align-content: center;
+    padding-left: 2px;
 }
 
 th > textarea{
     background-color:mediumaquamarine;
-    font-weight: bolder;
-
+    font-size: large;
 }
 
 textarea.table-title-immutable:focus-visible{
@@ -68,9 +72,29 @@ textarea.table-title-immutable:focus-visible{
 
 .toolbar{
     display:flex;
-    background-color: cornflowerblue;
+    background: linear-gradient(cornflowerblue,rgb(0, 0, 255));
     padding: 5px;
-    justify-content: space-between
+    justify-content: space-between;
+    width: calc(100% - 10px);
+    border-top:    3px solid blue;
+    border-bottom: 3px solid cornflowerblue;
+    
+}
+
+#lp-top-toolbar{
+    position: sticky;
+    top:0;
+}
+
+.fixed-bottom{
+    width: 100%;
+    position: fixed ;
+    bottom: 0vh;
+
+}
+
+#account-toolbar{
+    justify-content: left;
 }
 
 .advertisement{
@@ -79,4 +103,25 @@ textarea.table-title-immutable:focus-visible{
     font-weight: bold;
     text-align:center;
     max-height: 25vh;
+    position: sticky
+}
+
+.fooditem-count-buttons{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+}
+
+.account-button{
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+#signin{
+    background-color: azure
+}
+
+#signout{
+    background-color: darkslategray;
+    color: white;
 }

@@ -21,9 +21,9 @@ export default function ListerProposerScreen(){
 
 
     return (
+    <>
      <div className="green-bkg whole-page">
         <LPToolbar/>
-
         <div className="larder-seperation">
             <div id="general-larder-info">
                 <textarea id="user-summary" defaultValue={larderOverview}/>
@@ -57,10 +57,9 @@ export default function ListerProposerScreen(){
                 </div>
             </div>
         </div>
-
-        <AdSlot/>
         
         <AccountToolbar/>
     </div>
+    </>
     );
 }
