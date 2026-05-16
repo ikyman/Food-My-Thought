@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import LPToolbar from './LPToolbar'
 import AccountToolbar from './AccountToolbar'
 import FooditemTable from './FooditemTable';
+import AdSlot from './AdSlot'
 
 
 import { useLarderContext } from '../context/LarderContext/LarderContext'
@@ -57,11 +58,9 @@ export default function ListerProposerScreen(){
             </div>
         </div>
 
+        <AdSlot/>
+        
         <AccountToolbar/>
-
-        <div className="advertisement">
-            Buy some stuff!
-        </div>
     </div>
     );
 }

@@ -7,8 +7,8 @@ html, body, #root {
 .whole-page{
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 10px);
-    width: calc(100vw - 10px);
+    height: calc(100vh);
+    width: calc(100vw);
 }
 .green-bkg{
     background-color: ForestGreen;
@@ -78,4 +78,5 @@ textarea.table-title-immutable:focus-visible{
     color : navy;
     font-weight: bold;
     text-align:center;
+    max-height: 25vh;
 }
