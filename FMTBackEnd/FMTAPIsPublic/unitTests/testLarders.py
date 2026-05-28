@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model, login
-from FMTAPIsPublic import views
+from FMTAPIsPublic import larderViews
 from FMTAPIsPublic.models import UserLarder, FoodItem
 from datetime import date, timedelta
 from .fmtViewTestcase import FmtViewTestcase

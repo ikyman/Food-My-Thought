@@ -15,21 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
+from . import fooditemViews, larderViews
+from userNoUsername import views as userViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('usrs/signin/', views.userSignIn),
-    path('usrs/signout/', views.userSignOut),  
-    path('usrs/signup/', views.userSignUp),  
+    path('usrs/signin/', userViews.userSignIn),
+    path('usrs/signout/', userViews.userSignOut),  
+    path('usrs/signup/', userViews.userSignUp),  
     
-    path('larder/', views.getOwnLarder),
-    path('larders/url-extension/<int:url_exten>/', views.getLarderByURLext),
-    path('larders/url-extension/', views.getRandomLarder),
+    path('larder/', larderViews.getOwnLarder),
+    path('larders/url-extension/<int:url_exten>/', larderViews.getLarderByURLext),
+    path('larders/url-extension/', larderViews.getRandomLarder),
+    
+    path(r'fooditems/', fooditemViews.postFooditem),
+    path(r'fooditems/delete/<int:deleted_fooditem>', fooditemViews.deleteFooditem),
 
-    
-    path(r'fooditems/', views.postFoodItem),
-    
-    #path(r'recipes/<str:larder-url-extension>/', views.getRecipesForLarder),
+    #path('recipies/<int:fooditem_id>', views.getRecipiesUsingFooditem),
 ]
