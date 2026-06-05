@@ -119,9 +119,12 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
                     )}
                 </tbody>
             </table>
-            <div className="lister-only">
-                <button id="add-fooditem" onClick={addFoodItem}>Add Footitem</button>
-                <button id="delete-fooditem">Delete Fooditem</button>
+            <div className="lister-only fooditem-count-buttons">
+                <button id="add-fooditem" className="lp-button add-button" 
+                title='Add Fooditem'
+                onClick={addFoodItem}>Add FoodItem</button>
+                <button id="delete-fooditem" className="lp-button delete-button"
+                title='Delete Fooditem'>Delete FoodItem</button>
     
             </div>
         </div>
