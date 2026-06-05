@@ -20,9 +20,10 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
     }
 
     const onFoodTableArrowNav = (keyInput) => {
-        if (!keyInput.key.startsWith("Arrow")) {
+        if (!(keyInput.key.startsWith("Arrow") || keyInput.key === "Enter") ) {
             return;
         }
+        const downKeys = new Set(["ArrowDown", "Enter"])
         const textareaCalled = document.activeElement;
         const currentRow = keyInput.target.closest("tr");
         const ctrlKeyed = keyInput.ctrlKey;
@@ -35,7 +36,7 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
         const currentFoodItemIndex = foodItemTextareas.indexOf(textareaCalled);
 
         let selectedTextArea = undefined;
-        if (keyInput.key === "ArrowUp" || keyInput.key === "ArrowDown") {
+        if (keyInput.key === "ArrowUp" || downKeys.has(keyInput.key) ) {
             const textSelectionStart = textareaCalled.selectionStart;
             const textSelectionEnd = textareaCalled.selectionEnd;
 
@@ -55,7 +56,7 @@ export default function FooditemTable({loadedCategoryNames, viewAsOwner}) {
                     nextIndex = Math.max(0, 1);
                 }
             }
-            if (keyInput.key === "ArrowDown"){
+            if ( downKeys.has(keyInput.key) ){
                 nextIndex = Math.min(foodItemRows.length - 1, currentIndex+1);
                 if (ctrlKeyed &&  !fromCategoryNameRow){
                     nextIndex = foodItemRows.length - 1;
