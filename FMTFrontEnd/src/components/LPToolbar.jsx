@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReturnToOwnLarderButton from "./ReturnToOwnLarderButton"
+import RandomLarderForm from './RandomLarderForm/RandomLarderForm';
 
 export default function LPTpplbar(){
     const [userCode, setUserCode] = useState("The Default")
@@ -8,8 +9,7 @@ export default function LPTpplbar(){
     <div id = "lp-top-toolbar" className="toolbar">
         <div id="navigation-tools">
             <ReturnToOwnLarderButton/>
-            <button id="random-larder">Go to a Random Larder</button>
-            <button id="cycle-liveliness">Cycle Liveliness</button>
+            <RandomLarderForm displayMode = {"Toolbar"}/>
         </div>
         <button id="wipe-larder" className="lister-only">Wipe Larder</button>
 

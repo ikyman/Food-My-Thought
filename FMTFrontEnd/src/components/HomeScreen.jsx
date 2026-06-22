@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountToolbar from './AccountToolbar'
 import { useNavigate } from "react-router-dom";
-import RandomLarderForm from './RandomLarderForm'
+import RandomLarderForm from './RandomLarderForm/RandomLarderForm'
 import ReturnToOwnLarderButton from './ReturnToOwnLarderButton'
 import AdSlot from './AdSlot'
 
@@ -13,7 +13,7 @@ export default function HomeScreen(){
         <div className="green-bkg whole-page">
             <div>
                 <h1></h1>
-                <RandomLarderForm />
+                <RandomLarderForm displayMode = {"Homescreen"} />
                 <ReturnToOwnLarderButton/>
             </div>
 
