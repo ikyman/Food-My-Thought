@@ -1,0 +1,17 @@
+.account-button{
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+#signin{
+    background-color: azure
+}
+
+#signout{
+    background-color: darkslategray;
+    color: white;
+}
+
+#account-toolbar{
+    justify-content: left;
+}

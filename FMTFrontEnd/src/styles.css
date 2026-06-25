@@ -1,4 +1,9 @@
 
+:root {
+    --prime-border-colour: darkblue;
+    --prime-border-width: 3px;
+}
+
 html, body, #root {
     height: 100%;
     margin: 0;
@@ -10,6 +15,7 @@ html, body, #root {
     height: 100%;/*calc(100vh);*/
     width: 100%;
 }
+
 .green-bkg{
     background-color: ForestGreen;
 }
@@ -24,6 +30,9 @@ html, body, #root {
 }
 
 #user-summary{
+    border-color:var(--prime-border-colour);
+    border-width: var(--prime-border-width);
+
     font-size: 16pt;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     min-height: 20vh;
@@ -40,8 +49,8 @@ html, body, #root {
 
 td, th{
     padding: 0px;
-    border-width: 3px;
-    border-color:darkblue;
+    border-width: var(--prime-border-width);
+    border-color:var(--prime-border-colour);
     border-style: solid;
     box-sizing: border-box; 
 }
@@ -86,17 +95,11 @@ textarea.table-title-immutable:focus-visible{
     top:0;
 }
 
-
-
 .fixed-bottom{
     width: 100%;
     position: fixed ;
     bottom: 0vh;
 
-}
-
-#account-toolbar{
-    justify-content: left;
 }
 
 .advertisement{
@@ -112,20 +115,6 @@ textarea.table-title-immutable:focus-visible{
     display: flex;
     justify-content: space-around;
     margin: 5px;
-}
-
-.account-button{
-    font-weight: bold;
-    border-radius: 20px;
-}
-
-#signin{
-    background-color: azure
-}
-
-#signout{
-    background-color: darkslategray;
-    color: white;
 }
 
 .lp-button{
@@ -156,4 +145,17 @@ textarea.table-title-immutable:focus-visible{
         white 80%,
         red 100%
     );
+}
+
+.homescreen{
+    display: flex;
+    justify-content: center;
+}
+
+.homescreen-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    width: 60%;
 }
