@@ -10,6 +10,7 @@ export const LarderContextProvider = ({children}) => {
   const { url_exten } = useParams();
 
   const [viewAsOwner, setViewAsOwner] = useState(false);
+  const [viewLive, setViewLive] = useState(true);
   const [larderOverview, setLarderOverview] = useState("This box can only be edited by listers. It is a general description of the larder.")
   const [foodItems, setFoodItems] = useState([]);
 
@@ -18,6 +19,8 @@ export const LarderContextProvider = ({children}) => {
     const larderJson = await larderResponse.json();
     setViewAsOwner(larderJson["display_as_owner"] )
     setLarderOverview(larderJson["user_description"])
+    setViewLive(larderJson["live"])
+    
     let lfi = [];
     for (let i = 0; i < larderJson["fooditems"].length; ++i){
         const newFoodItem = new FoodItem( larderJson["fooditems"][i]);
@@ -56,7 +59,7 @@ export const LarderContextProvider = ({children}) => {
 
 	return (
     <LarderContext.Provider
-      value={{ loadLarder, addFoodItem, backEndSave, deleteFoodItem, getFoodItems}}
+      value={{ loadLarder, addFoodItem, backEndSave, deleteFoodItem, getFoodItems, viewLive}}
     >
       {children}
     </LarderContext.Provider>

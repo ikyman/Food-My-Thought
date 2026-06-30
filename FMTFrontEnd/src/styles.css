@@ -2,6 +2,8 @@
 :root {
     --prime-border-colour: darkblue;
     --prime-border-width: 3px;
+
+    --font-regular: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 html, body, #root {
@@ -20,6 +22,10 @@ html, body, #root {
     background-color: ForestGreen;
 }
 
+.grey-bkg{
+    background-color: grey;
+}
+
 .larder-seperation{
     display:flex;
     padding: 5px;
@@ -32,11 +38,21 @@ html, body, #root {
 #user-summary{
     border-color:var(--prime-border-colour);
     border-width: var(--prime-border-width);
+    border-style: solid;
+
+    background-color:mintcream;
+    padding: 2px;
+    display:block;
+    margin-bottom: 4px;
 
     font-size: 16pt;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--font-regular);
     min-height: 20vh;
     width: 80%;
+}
+
+.grey-text{
+    color: grey;
 }
 
 #fooditem-table{
@@ -150,12 +166,35 @@ textarea.table-title-immutable:focus-visible{
 .homescreen{
     display: flex;
     justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
 }
 
 .homescreen-center{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60%;
+    height: 50%;
     width: 60%;
+    ;
+}
+
+.homescreen-center > button, form{
+    flex-basis: 100%;
+}
+
+.homescreen-center > button{
+    font-size: 400%;
+    /*text-align: start;*/
+}
+
+#own-larder-button{
+    background-color: aqua;
+    background-image: linear-gradient(
+        aqua 0%, 
+        royalblue 80%, 
+        lightskyblue 100%
+    );
+    font-family: var(--font-regular);
+    border-color: darkcyan;
+    border-width: 5px;
+    border-radius: 12%;
 }

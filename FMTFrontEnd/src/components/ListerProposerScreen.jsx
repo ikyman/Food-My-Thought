@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import LPToolbar from './LPToolbar'
-import AccountToolbar from './AccountToolbar'
+import AccountToolbar from '../userManagement/AccountToolbar'
 import FooditemTable from './FooditemTable';
 import AdSlot from './AdSlot'
 
@@ -10,23 +10,27 @@ import { useLarderContext } from '../context/LarderContext/LarderContext'
 
 
 export default function ListerProposerScreen(){
-    const larderContext = useLarderContext();
-    const [viewAsOwner, setViewAsOwner] = useState(false);
+    const {viewLive, viewAsOwner, loadLarder} = useLarderContext();
     const [larderOverview, setLarderOverview] = useState("This box can only be edited by listers. It is a general description of the larder.")
 
 
     useEffect(() => {
-        larderContext.loadLarder();
+        loadLarder();
     }, []);
 
 
     return (
     <>
-     <div className="green-bkg whole-page">
+     <div className={"whole-page " + (viewLive? "green-bkg" : "grey-bkg")} >
         <LPToolbar/>
         <div className="larder-seperation">
             <div id="general-larder-info">
-                <textarea id="user-summary" defaultValue={larderOverview}/>
+                {
+                    (!viewLive || viewAsOwner)? 
+                    <div id="user-summary">{(!viewLive? <a className='grey-text'>[expired]</a> : <></>)} {larderOverview} </div>:
+                    <textarea id="user-summary" defaultValue={larderOverview}/>
+
+                }
                 <FooditemTable  loadedCategoryNames = {["Cat 1", "Cat 2"]} viewAsOwner = {viewAsOwner}/>
             </div>
 
