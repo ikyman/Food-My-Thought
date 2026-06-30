@@ -2,14 +2,14 @@ import React from 'react';
 
 export default function RandomLarderHomescreen({submitAction}) {
 
-    const submitRandomLarderForm = (event) => {
+    const submitHomescreenRandomForm = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         submitAction(formData.get('liveliness'))
     }
 
     return (
-        <form onSubmit={submitAction}>
+        <form onSubmit={submitHomescreenRandomForm}>
             <button type="submit">Recommend Recipes to Randos</button>
             <div>
                 <label>
